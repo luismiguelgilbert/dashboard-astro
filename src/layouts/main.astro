@@ -1,6 +1,13 @@
 ---
 import '../styles/global.css';
-const { content } = Astro.props;
+import AppSidebar from '@/components/blocks/AppSidebar.vue';
+interface Props {
+  title: string;
+  description?: string;
+  publishDate?: string;
+  viewCount?: number;
+}
+const { title } = Astro.props;
 ---
 
 <html lang="en">
@@ -8,9 +15,13 @@ const { content } = Astro.props;
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{content.title}</title>
+		<title>{title}</title>
 	</head>
 	<body>
+		<AppSidebar client:load>
+			content: {title}
+			<slot />
+		</AppSidebar>
 		<slot />
 	</body>
 </html>
