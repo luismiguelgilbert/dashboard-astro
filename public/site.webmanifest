@@ -1,0 +1,8 @@
+
+{
+  "description": "Web application powered by BITT",
+  "display_override": ["fullscreen", "minimal-ui"],
+  "display": "standalone",
+  "short_name": "Framework",
+  "start_url": "/"
+}
