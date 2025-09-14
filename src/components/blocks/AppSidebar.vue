@@ -14,6 +14,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar'
+import ModeToggle from '@/components/blocks/ModeToggle.vue'
 import { Home, Users2, ShieldUserIcon } from "lucide-vue-next";
 
 const { title } = defineProps<{
@@ -73,10 +74,15 @@ const items = [
       <SidebarRail />
     </Sidebar>
     <SidebarInset>
-      <header class="padding-safe flex h-16 shrink-0 items-center gap-2 border-b w-full fixed bg-white dark:bg-gray-900 z-10">
-        <div class="flex items-center gap-2 px-3">
-          <SidebarTrigger class="cursor-pointer" />
-          {{ title }}
+      <header class="padding-safe flex h-16 shrink-0 fixed border-b dark:border-b-neutral-800 bg-white dark:bg-zinc-900" style="width: -webkit-fill-available;">
+        <div class="flex w-full p-2 items-center justify-between">
+          <div class="flex items-center gap-2">
+            <SidebarTrigger class="cursor-pointer" />
+            {{ title }}
+          </div>
+          <div class="flex items-center gap-2">
+            <ModeToggle />
+          </div>
         </div>
       </header>
       <main class="mt-24 px-2 md:mt-20 md:px-4">
