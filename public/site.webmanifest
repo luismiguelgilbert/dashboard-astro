@@ -2,7 +2,9 @@
 {
   "description": "Web application powered by BITT",
   "display_override": ["fullscreen", "minimal-ui"],
-  "display": "standalone",
+  "display": "fullscreen",
   "short_name": "Framework",
-  "start_url": "/"
+  "start_url": "/",
+  "theme_color": "#3367D6",
+  "scope": "/"
 }

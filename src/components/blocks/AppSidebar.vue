@@ -73,13 +73,13 @@ const items = [
       <SidebarRail />
     </Sidebar>
     <SidebarInset>
-      <header class="flex h-16 shrink-0 items-center gap-2 border-b w-full fixed bg-white dark:bg-gray-900 z-10">
+      <header class="padding-safe flex h-16 shrink-0 items-center gap-2 border-b w-full fixed bg-white dark:bg-gray-900 z-10">
         <div class="flex items-center gap-2 px-3">
           <SidebarTrigger class="cursor-pointer" />
           {{ title }}
         </div>
       </header>
-      <main>
+      <main class="mt-24 px-2 md:mt-20 md:px-4">
         <slot />
       </main>
     </SidebarInset>
