@@ -43,7 +43,7 @@ const items = [
   <SidebarProvider>
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <div class="self-center">
+        <div class="padding-safe self-center">
           <!-- Company Selector  -->
           B
         </div>
