@@ -8,6 +8,7 @@ interface Props {
   viewCount?: number;
 }
 const { title } = Astro.props;
+const color = 'white';
 // const colorMode = useColorMode()
 // const color = computed(() => colorMode.value === 'dark' ? '#1b1718' : 'white');
 ---
@@ -19,7 +20,7 @@ const { title } = Astro.props;
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<!-- <meta name="theme-color" content={color} /> -->
+		<meta name="theme-color" content={color} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<title>{title}</title>
 	</head>
