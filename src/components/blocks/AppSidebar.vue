@@ -16,6 +16,10 @@ import {
 } from '@/components/ui/sidebar'
 import { Home, Users2, ShieldUserIcon } from "lucide-vue-next";
 
+const { title } = defineProps<{
+  title: string
+}>()
+
 const items = [
   {
     title: "Home",
@@ -67,18 +71,12 @@ const items = [
       <header class="flex h-16 shrink-0 items-center gap-2 border-b">
         <div class="flex items-center gap-2 px-3">
           <SidebarTrigger />
-          something here
+          {{ title }}
         </div>
       </header>
-      <slot />
-      <div class="flex flex-1 flex-col gap-4 p-4">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div class="aspect-video rounded-xl bg-muted/50" />
-          <div class="aspect-video rounded-xl bg-muted/50" />
-          <div class="aspect-video rounded-xl bg-muted/50" />
-        </div>
-        <div class="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-      </div>
+      <main>
+        <slot />
+      </main>
     </SidebarInset>
   </SidebarProvider>
 </template>
