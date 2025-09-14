@@ -42,7 +42,12 @@ const items = [
 <template>
   <SidebarProvider>
     <Sidebar collapsible="icon">
-      <SidebarHeader />
+      <SidebarHeader>
+        <div class="self-center">
+          <!-- Company Selector  -->
+          B
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -68,9 +73,9 @@ const items = [
       <SidebarRail />
     </Sidebar>
     <SidebarInset>
-      <header class="flex h-16 shrink-0 items-center gap-2 border-b">
+      <header class="flex h-16 shrink-0 items-center gap-2 border-b w-full fixed bg-white dark:bg-gray-900 z-10">
         <div class="flex items-center gap-2 px-3">
-          <SidebarTrigger />
+          <SidebarTrigger class="cursor-pointer" />
           {{ title }}
         </div>
       </header>

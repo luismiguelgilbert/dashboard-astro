@@ -2,5 +2,15 @@
 import MainLayout from '@/layouts/main.astro';
 ---
 <MainLayout title="Users">
-  <p>Users, right?</p>
+  <div class="mt-16 p-4">
+    <p>Users, right?</p>
+		<div class="flex flex-1 flex-col gap-4">
+			<div class="grid auto-rows-min gap-4 md:grid-cols-3">
+				<div class="aspect-video rounded-xl bg-blue-200" />
+				<div class="aspect-video rounded-xl bg-blue-200" />
+				<div class="aspect-video rounded-xl bg-blue-200" />
+			</div>
+			<div class="min-h-[100dvh] flex-1 rounded-xl bg-blue-200" />
+		</div>
+	</div>
 </MainLayout>
