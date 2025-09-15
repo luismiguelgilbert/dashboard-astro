@@ -2,11 +2,7 @@
 
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
-
 import vue from '@astrojs/vue';
-
-// import vercel from '@astrojs/vercel';
-
 import node from '@astrojs/node';
 
 // https://astro.build/config
