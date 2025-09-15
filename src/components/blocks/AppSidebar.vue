@@ -74,7 +74,9 @@ const items = [
       <SidebarRail />
     </Sidebar>
     <SidebarInset>
-      <header class="padding-safe flex h-16 shrink-0 fixed border-b dark:border-b-neutral-800 bg-white dark:bg-zinc-900" style="width: -webkit-fill-available;">
+      <header
+        class="padding-safe flex h-16 shrink-0 fixed border-b dark:border-b-neutral-800 bg-white dark:bg-zinc-900"
+        style="width: -webkit-fill-available, -moz-available">
         <div class="flex w-full p-2 items-center justify-between">
           <div class="flex items-center gap-2">
             <SidebarTrigger class="cursor-pointer" />
@@ -92,3 +94,8 @@ const items = [
   </SidebarProvider>
 </template>
 
+<style>
+.something {
+  width: webkit-fill-available, fill-available;
+}
+</style>
