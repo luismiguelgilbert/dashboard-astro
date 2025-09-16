@@ -2,7 +2,7 @@
 import "../styles/global.css";
 import LoginLayout from '@/layouts/LoginLayout.astro';
 import Button from '@/components/ui/button/Button.vue';
-// import UInput from '@/components/ui/input/Input.vue';
+import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
 import {
   Card,
@@ -31,7 +31,7 @@ import { AtSign, KeySquare, LogIn, DatabaseZap } from "lucide-vue-next";
                 <div class="grid w-full max-w-sm items-center gap-1.5">
                   <Label for="user_name">Usuario</Label>
                   <div class="relative w-full max-w-sm items-center">
-                    <!-- <input type="text" placeholder="Ingrese su usuario..." class="pl-10" /> -->
+                    <Input type="text" placeholder="Ingrese su usuario..." class="pl-10" />
                     <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
                       <AtSign class="size-6 text-muted-foreground" />
                     </span>
@@ -40,7 +40,7 @@ import { AtSign, KeySquare, LogIn, DatabaseZap } from "lucide-vue-next";
                 <div class="grid w-full max-w-sm items-center gap-1.5">
                   <Label for="user_name">Contrase&#241;a</Label>
                   <div class="relative w-full max-w-sm items-center">
-                    <!-- <UInput id="search" type="password" placeholder="Ingrese su usuario..." class="pl-10" /> -->
+                    <Input id="search" type="password" placeholder="Ingrese su usuario..." class="pl-10" />
                     <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
                       <KeySquare class="size-6 text-muted-foreground" />
                     </span>
