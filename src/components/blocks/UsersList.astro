@@ -3,18 +3,20 @@ import { db } from '@/db';
 type User = {
   user_name: string;
   user_lastname: string;
-  avatar_url: string;
-  id: number;
+  avatar_url?: string | null;
+  id: string;
+  total_count: number;
 };
-const response = await db.query(`select user_name, user_lastname, avatar_url, id
+let users: User[] = [];
+const { rows } = await db.query<User>(`select user_name, user_lastname, avatar_url, id, count(*) OVER() AS total_count
 from sys_users a
-where a.email like '%gilbert%'
-and a.is_active = True
-limit 5`);
-const users = response.rows;
+where a.is_active = True`);
+users = rows.splice(0,5);
 ---
 
 <h1 class="text-2xl font-bold mb-4">Users List</h1>
+count: {users[0].total_count}
+
 {users.map(user => (
   <div class="p-4 border rounded-lg">
     <h2 class="text-xl font-semibold">{user.user_name}</h2>
