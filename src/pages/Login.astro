@@ -2,7 +2,7 @@
 import "../styles/global.css";
 import LoginLayout from '@/layouts/LoginLayout.astro';
 import Button from '@/components/ui/button/Button.vue';
-import Input from '@/components/ui/input/Input.vue';
+import UInput from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
 import {
   Card,
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { AtSign, KeySquare, LogIn, DatabaseZap } from "lucide-vue-next";
 ---
-<LoginLayout>
+<LoginLayout title="Framework | BITT">
   <div class="w-full sm:grid sm:grid-cols-2 sm:min-h-[calc(100dvh)] px-5 sm:px-0">
     <div class="flex items-center justify-center py-2 sm:py-12">
       <div class="mx-auto grid w-[350px] gap-6">
@@ -31,7 +31,7 @@ import { AtSign, KeySquare, LogIn, DatabaseZap } from "lucide-vue-next";
                 <div class="grid w-full max-w-sm items-center gap-1.5">
                   <Label for="user_name">Usuario</Label>
                   <div class="relative w-full max-w-sm items-center">
-                    <Input id="search" type="text" placeholder="Ingrese su usuario..." class="pl-10" />
+                    <input type="text" placeholder="Ingrese su usuario..." class="pl-10" />
                     <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
                       <AtSign class="size-6 text-muted-foreground" />
                     </span>
@@ -40,7 +40,7 @@ import { AtSign, KeySquare, LogIn, DatabaseZap } from "lucide-vue-next";
                 <div class="grid w-full max-w-sm items-center gap-1.5">
                   <Label for="user_name">Contrase&#241;a</Label>
                   <div class="relative w-full max-w-sm items-center">
-                    <Input id="search" type="password" placeholder="Ingrese su usuario..." class="pl-10" />
+                    <UInput id="search" type="password" placeholder="Ingrese su usuario..." class="pl-10" />
                     <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
                       <KeySquare class="size-6 text-muted-foreground" />
                     </span>
@@ -52,30 +52,6 @@ import { AtSign, KeySquare, LogIn, DatabaseZap } from "lucide-vue-next";
                 Ingresar
                 <LogIn name="i-lucide-log-in" class="size-6" />
               </Button>
-              <!-- <UAlert
-                v-if="queryParams.session_error"
-                variant="soft"
-                color="error"
-                description="No encontramos una sesión activa."
-                icon="i-lucide-shield-x" />
-              <UAlert
-                v-if="queryParams.invalid"
-                variant="soft"
-                color="error"
-                description="Credenciales incorrectas."
-                icon="i-lucide-square-asterisk" />
-              <UAlert
-                v-if="queryParams.invalid_companies"
-                variant="soft"
-                color="error"
-                description="Sin organizaciones asignadas."
-                icon="i-lucide-square-asterisk" />
-              <UAlert
-                v-if="queryParams.invalid_companies"
-                variant="soft"
-                color="error"
-                description="Sin permisos asignados."
-                icon="i-lucide-square-asterisk" /> -->
             </form>
           </CardContent>
         </Card>
