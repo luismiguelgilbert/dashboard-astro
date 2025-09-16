@@ -6,31 +6,12 @@ type User = {
   avatar_url: string;
   id: number;
 };
-let users: User[] = [];
-// db.query(`select user_name, user_lastname, avatar_url, id
-// from sys_users a
-// where a.email like '%gilbert%'
-// and a.is_active = True
-// limit 5`).then((res) => {
-//   console.log('responnse!!!');
-//   console.log(res.rows);
-//   users = res.rows;
-//   console.log(users);
-// });
-// add a setimeout to simulate a delay
-export async function getStaticPaths() {
-  return [
-    // { params: { } },
-    // { params: { user: 'alice' } },
-    // { params: { user: 'bob' } },
-  ];
-}
-const resultSet = await db.query<User>(`select user_name, user_lastname, avatar_url, id
+const response = await db.query(`select user_name, user_lastname, avatar_url, id
 from sys_users a
 where a.email like '%gilbert%'
 and a.is_active = True
 limit 5`);
-users = resultSet.rows;
+const users = response.rows;
 ---
 
 <h1 class="text-2xl font-bold mb-4">Users List</h1>
