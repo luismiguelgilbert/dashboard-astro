@@ -4,9 +4,11 @@ import UsersList from '@/components/blocks/UsersList.astro'
 ---
 <MainLayout title="Users">
   <div>
-    <p>Users, right?</p>
-		<UsersList server:defer>
-			<p slot="fallback">Loading users...</p>
-		</UsersList>
+		<div class="flex flex-1 flex-col gap-4">
+			<p>Users, right?</p>
+			<UsersList server:defer>
+				<p slot="fallback">Loading users...</p>
+			</UsersList>
+		</div>
 	</div>
 </MainLayout>
