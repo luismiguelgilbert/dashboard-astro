@@ -18,6 +18,7 @@ export default defineConfig({
 
   integrations: [vue()],
   // adapter: import.meta.env.DEVELOPMENT ? node({ mode: 'standalone' }) : vercel(),
-  adapter: vercel(),
   // adapter: node({ mode: 'standalone' }),
+  adapter: vercel(),
+  output: 'static',
 });

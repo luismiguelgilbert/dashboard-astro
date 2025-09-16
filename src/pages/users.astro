@@ -1,0 +1,20 @@
+---
+// export const prerender = false;
+import MainLayout from '@/layouts/main.astro';
+import UsersList from '@/components/blocks/UsersList.astro'
+---
+<MainLayout title="Users">
+  <div>
+    <p>Users, right?</p>
+		<div class="flex flex-1 flex-col gap-4">
+			<div class="grid auto-rows-min gap-4 md:grid-cols-3">
+				<div class="aspect-video rounded-xl bg-blue-200" />
+				<div class="aspect-video rounded-xl bg-blue-200" />
+				<div class="aspect-video rounded-xl bg-blue-200" />
+			</div>
+		</div>
+		<UsersList server:defer>
+			<p slot="fallback">Loading users...</p>
+		</UsersList>
+	</div>
+</MainLayout>
