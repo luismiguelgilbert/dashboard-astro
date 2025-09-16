@@ -9,7 +9,7 @@ const mode = useColorMode()
 <template>
   <Button
     variant="ghost"
-    class="cursor-pointer h-12"
+    class="cursor-pointer h-12 w-12"
     @click="() => mode = mode === 'dark' ? 'light' : 'dark'">
     <SunMoon />
   </Button>

@@ -15,6 +15,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 import ModeToggle from '@/components/blocks/ModeToggle.vue'
+import UserDropdown from "./UserDropdown.vue";
 import { Home, Users2, ShieldUserIcon } from "lucide-vue-next";
 
 const { title } = defineProps<{
@@ -83,6 +84,7 @@ const items = [
           </div>
           <div class="flex items-center gap-2">
             <ModeToggle />
+            <UserDropdown />
           </div>
         </div>
       </header>

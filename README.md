@@ -11,3 +11,15 @@ pnpm create astro@latest -- --template with-tailwindcss
 Astro comes with [Tailwind](https://tailwindcss.com) support out of the box. This example showcases how to style your Astro project with Tailwind.
 
 For complete setup instructions, please see our [Tailwind Integration Guide](https://docs.astro.build/en/guides/integrations-guide/tailwind).
+
+
+How I fixed...
+* Deployment issues to Vercel:
+- Installed `@astrojs/vercel`
+- Added the following lines to [astro.config.mjs]
+  adapter: vercel(),
+  output: 'server',
+
+* Installing ShadCN Vue components:
+- Added `"packageManager": "pnpm@10.14.0"` to [package.json]
+- I created all missing folders described in [components.json]
