@@ -19,9 +19,9 @@ const closeSession = () => { window.location = '/login' };
   <DropdownMenu>
     <DropdownMenuTrigger as-child>
       <Avatar
-        class="cursor-pointer h-10 w-10">
+        class="cursor-pointer h-6 md:h-10 w-6 md:w-10">
         <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
-        <AvatarFallback>{{ user }}</AvatarFallback>
+        <AvatarFallback class="text-xs md:text-lg">{{ user }}</AvatarFallback>
       </Avatar>
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56">
