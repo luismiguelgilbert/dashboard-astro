@@ -14,7 +14,7 @@
     "@astrojs/node": "^9.4.3",
     "@astrojs/vercel": "^8.2.7",
     "@astrojs/vue": "^5.1.1",
-    "@tailwindcss/vite": "^4.1.12",
+    "@tailwindcss/vite": "^4.1.13",
     "@types/canvas-confetti": "^1.9.0",
     "@vueuse/core": "^13.9.0",
     "astro": "^5.13.7",
@@ -26,7 +26,7 @@
     "pg": "^8.16.3",
     "reka-ui": "^2.5.0",
     "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.12",
+    "tailwindcss": "^4.1.13",
     "vue": "^3.5.21"
   },
   "devDependencies": {
