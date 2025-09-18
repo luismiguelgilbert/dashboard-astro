@@ -1,0 +1,17 @@
+---
+export const prerender = true;
+import MainLayout from '@/layouts/MainLayout.astro';
+---
+<MainLayout title="Profiles">
+  <div>
+		<div class="flex flex-1 flex-col gap-4">
+			<p>Companies!</p>
+			<div class="grid auto-rows-min gap-4 md:grid-cols-3">
+				<div class="aspect-video rounded-xl bg-purple-400" />
+				<div class="aspect-video rounded-xl bg-purple-400" />
+				<div class="aspect-video rounded-xl bg-purple-400" />
+			</div>
+			<div class="min-h-[100dvh] flex-1 rounded-xl bg-purple-400" />
+		</div>
+	</div>
+</MainLayout>

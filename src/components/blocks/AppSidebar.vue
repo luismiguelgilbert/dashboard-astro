@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SystemLinks } from '@/routes';
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import {
   Sidebar,
@@ -15,30 +16,13 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 import ModeToggle from '@/components/blocks/ModeToggle.vue'
-import UserDropdown from "./UserDropdown.vue";
-import { Home, Users2, ShieldUserIcon } from "lucide-vue-next";
+import Icon from '@/components/ui/icon.vue'
+import UserDropdown from '@/components/blocks/UserDropdown.vue'
 
 const { title } = defineProps<{
   title: string
 }>()
 
-const items = [
-  {
-    title: "Home",
-    url: "/",
-    icon: Home,
-  },
-  {
-    title: "Users",
-    url: "/settings/users",
-    icon: Users2,
-  },
-  {
-    title: "Perfiles",
-    url: "/settings/profiles",
-    icon: ShieldUserIcon,
-  },
-];
 </script>
 
 <template>
@@ -52,15 +36,27 @@ const items = [
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <a href="/" tooltip="Página de Inicio">
+                  <Icon name="Home" />
+                  <span>Inicio</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
+        <SidebarGroup v-for="link in SystemLinks.filter(l => !l.parent)" :key="link.id">
+          <SidebarGroupLabel>{{ link.name_es }}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem v-for="item in items" :key="item.title">
+              <SidebarMenuItem v-for="page in SystemLinks.filter(p => p.parent === link.id)" :key="page.id" :title="page.comment_es">
                 <SidebarMenuButton asChild>
-                    <a :href="item.url">
-                      <component :is="item.icon" />
-                      <span>{{item.title}}</span>
-                    </a>
+                  <a :href="page.link" :tooltip="page.comment_es">
+                    <Icon :name="page.icon" />
+                    <span>{{page.name_es}}</span>
+                  </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
