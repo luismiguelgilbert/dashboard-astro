@@ -63,11 +63,6 @@ const { title } = defineProps<{
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
-        <div class="p-1">
-          luismiguelgilbert@gmail.com
-        </div>
-      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
     <SidebarInset>
