@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { authClient } from '@/lib/auth-client';
 import { Settings2, LogOut } from "lucide-vue-next";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -12,7 +13,10 @@ import {
 
 const user = 'LG';
 const userLogin = 'luismiguelgilbert@gmail.com';
-const closeSession = () => { window.location = '/login' };
+const closeSession = async () => {
+  await authClient.signOut();
+  window.location.href = '/login'
+};
 </script>
 
 <template>

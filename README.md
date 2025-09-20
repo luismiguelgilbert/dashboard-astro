@@ -23,3 +23,8 @@ How I fixed...
 * Installing ShadCN Vue components:
 - Added `"packageManager": "pnpm@10.14.0"` to [package.json]
 - I created all missing folders described in [components.json]
+
+AUTHENTICATION:
+- I'm using Better Auth
+- The CLI connects to the Postgres DB (defined here: src/lib/auth.ts) and creates the tables
+- Currently, any person can sign up
