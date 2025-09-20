@@ -14,5 +14,6 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
-  }
+  },
+  // trustedOrigins: ['http://localhost:4321', 'http://192.168.68.64:4321']
 });
