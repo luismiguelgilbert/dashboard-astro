@@ -1,17 +1,21 @@
 ---
-import { db } from '@/db';
-type User = {
-  user_name: string;
-  user_lastname: string;
-  avatar_url?: string | null;
-  id: string;
-  total_count: number;
-};
-let users: User[] = [];
-const { rows } = await db.query<User>(`select user_name, user_lastname, avatar_url, id, count(*) OVER() AS total_count
-from sys_users a
-where a.is_active = True`);
-users = rows.splice(0,5);
+// import { db } from '@/db';
+// type User = {
+//   user_name: string;
+//   user_lastname: string;
+//   avatar_url?: string | null;
+//   id: string;
+//   total_count: number;
+// };
+// let users: User[] = [];
+// const { rows } = await db.query<User>(`select user_name, user_lastname, avatar_url, id, count(*) OVER() AS total_count
+// from sys_users a
+// where a.is_active = True`);
+// users = rows.splice(0,5);
+console.log('user is about to fetch data');
+const users = await (await fetch('http://localhost:4321/api/users.json')).json();
+console.log('user ready');
+console.log((await users));
 ---
 
 <h1 class="text-2xl font-bold mb-4">Users List</h1>
