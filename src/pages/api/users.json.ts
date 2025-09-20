@@ -3,7 +3,7 @@ import type { APIRoute } from "astro";
 import type { Pool } from "pg";
 // import type { DbContext } from "../types"; // See note below on typing
 
-type User = {
+export type User = {
   user_name: string;
   user_lastname: string;
   avatar_url?: string | null;
@@ -17,16 +17,14 @@ export const GET: APIRoute = async ({ locals }) => {
     const db = locals.db as Pool;
   
     let users: User[] = [];
+    console.time('db query');
     const { rows } = await db.query<User>(`select user_name, user_lastname, avatar_url, id, count(*) OVER() AS total_count
-    from sys_users a
-    where a.is_active = True`);
+      from sys_users a
+      where a.is_active = True`);
+    console.timeEnd('db query');
     users = rows.splice(0,5);
 
     return new Response(JSON.stringify(users), { status: 200 });
-    // try {
-    //   const { rows } = await db.query('SELECT id, name FROM users');
-    //   return new Response(JSON.stringify(rows), { status: 200 });
-    // }
   }
   catch (err) {
     console.error(err);
