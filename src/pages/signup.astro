@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AtSign, KeySquare, LogIn, DatabaseZap } from "lucide-vue-next";
+import { AtSign, KeySquare, LogIn, DatabaseZap, UserRoundPlus } from "lucide-vue-next";
 ---
 <script>
   // import { authClient } from '@/auth-client'
@@ -19,14 +19,17 @@ import { AtSign, KeySquare, LogIn, DatabaseZap } from "lucide-vue-next";
   document.getElementById('signin-form')?.addEventListener('submit', async (event) => {
     event.preventDefault();
     // @ts-expect-error
+    const name = event.target?.name.value
+    // @ts-expect-error
     const email = event.target?.email.value
     // @ts-expect-error
     const password = event.target?.password.value
-    const tmp = await authClient.signIn.email({
+    const tmp = await authClient.signUp.email({
+      name,
       email,
       password,
     })
-    if (Boolean(tmp.error) === false) window.location.href = '/'
+    if (Boolean(tmp.error) === false) window.location.href = '/login'
   })
 </script>
 <LoginLayout title="Framework | BITT">
@@ -35,14 +38,23 @@ import { AtSign, KeySquare, LogIn, DatabaseZap } from "lucide-vue-next";
       <div class="mx-auto grid w-[350px] gap-6">
         <Card class="w-[350px]">
           <CardHeader>
-            <CardTitle>Bienvenido a Framework</CardTitle>
-            <CardDescription>Ingrese sus credencial para continuar</CardDescription>
+            <CardTitle>Registrase en Framework</CardTitle>
+            <CardDescription>Ingrese sus credencial para registrarse</CardDescription>
           </CardHeader>
           <CardContent>
             <form
               id="signin-form"
               class="grid gap-4">
               <div class="grid gap-2 gap-y-5">
+                <div class="grid w-full max-w-sm items-center gap-1.5">
+                  <Label for="user_name">Nombre Completo</Label>
+                  <div class="relative w-full max-w-sm items-center">
+                    <Input type="text" name="name" placeholder="Ingrese su usuario..." class="pl-10" />
+                    <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
+                      <UserRoundPlus class="size-6 text-muted-foreground" />
+                    </span>
+                  </div>
+                </div>
                 <div class="grid w-full max-w-sm items-center gap-1.5">
                   <Label for="user_name">Usuario</Label>
                   <div class="relative w-full max-w-sm items-center">
@@ -64,10 +76,9 @@ import { AtSign, KeySquare, LogIn, DatabaseZap } from "lucide-vue-next";
               </div>
   
               <Button class="h-12 w-full mt-2 cursor-pointer justify-between" type="submit">
-                Ingresar
+                Registrarse
                 <LogIn name="i-lucide-log-in" class="size-6" />
               </Button>
-              <p>Don't have an account? <a href="/signup">Sign up here</a>.</p>
             </form>
           </CardContent>
         </Card>
