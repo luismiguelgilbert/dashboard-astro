@@ -16,13 +16,15 @@ export const GET: APIRoute = async ({ locals }) => {
     // @ts-expect-error env.d.ts isn't working yet
     const db = locals.db as Pool;
   
-    let users: User[] = [];
+    // let users: User[] = [];
     console.time('db query');
-    const { rows } = await db.query<User>(`select user_name, user_lastname, avatar_url, id, count(*) OVER() AS total_count
+    const { rows: users } = await db.query<User>(`select user_name, user_lastname, avatar_url, id, count(*) OVER() AS total_count
       from sys_users a
-      where a.is_active = True`);
+      where a.is_active = True
+      limit 5`);
     console.timeEnd('db query');
-    users = rows.splice(0,5);
+    // users = rows.splice(0,5);
+    // users = rows;
 
     return new Response(JSON.stringify(users), { status: 200 });
   }
