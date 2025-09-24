@@ -5,7 +5,7 @@
   "display": "fullscreen",
   "short_name": "Framework",
   "start_url": "/",
-  "theme_color": "#3367D6",
+  "theme_color": "#000000",
   "scope": "/",
   "icons": [
     {
