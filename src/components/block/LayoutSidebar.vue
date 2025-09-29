@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import "@/styles/global.css";
+import { computed } from "vue";
 import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarInset, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from "@/components/ui/sidebar";
 import { sidebarMenuList } from "@/types/Menu.ts";
 // import {Loader} from "lucide-vue-next";
@@ -7,6 +8,27 @@ import { sidebarMenuList } from "@/types/Menu.ts";
 const props = defineProps<{
   urlPathName: string
 }>()
+
+// remove last character if it is slash character:
+const formattedUrlPathName = computed(() => {
+  const lastCharacter = props.urlPathName.charAt(props.urlPathName.length - 1);
+  return (lastCharacter === '/' && props.urlPathName.length > 1)
+    ? props.urlPathName.slice(0, -1)
+    : props.urlPathName;
+});
+const routeTitle = computed(() => {
+  let result = '';
+  for (let group of sidebarMenuList) {
+    for (let item of group.items) {
+      if (item.url === formattedUrlPathName.value) {
+        result = item.title;
+        break;
+      }
+    }
+  }
+
+  return result;
+});
 </script>
 
 <template>
@@ -18,10 +40,10 @@ const props = defineProps<{
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem v-for="menuItem in group.items" :key="menuItem.title">
-                <SidebarMenuButton asChild :is-active="props.urlPathName === menuItem.url">
+                <SidebarMenuButton asChild :is-active="menuItem.url === formattedUrlPathName">
                   <a :href="menuItem.url">
                     <component :is="menuItem.icon" />
-                    <span>{{menuItem.title}} - {{menuItem.url}}</span>
+                    <span>{{menuItem.title}}</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -39,7 +61,7 @@ const props = defineProps<{
             <SidebarTrigger
               ref="theSidebarTrigger"
               class="cursor-pointer" />
-            {{props.urlPathName}}
+            {{ routeTitle }}
           </div>
           <div class="flex items-center gap-2">
 <!--            <Colortoggle />-->
