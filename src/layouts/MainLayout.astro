@@ -1,5 +1,6 @@
 ---
 import LayoutSidebar from '@/components/block/LayoutSidebar.vue';
+const { pathname } = Astro.url;
 ---
 
 
@@ -12,7 +13,7 @@ import LayoutSidebar from '@/components/block/LayoutSidebar.vue';
   <title>Astro</title>
 </head>
 
-<LayoutSidebar client:load >
+<LayoutSidebar client:load urlPathName={pathname}>
   <slot />
 </LayoutSidebar>
 </html>

@@ -3,6 +3,10 @@ import "@/styles/global.css";
 import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarInset, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from "@/components/ui/sidebar";
 import { sidebarMenuList } from "@/types/Menu.ts";
 // import {Loader} from "lucide-vue-next";
+
+const props = defineProps<{
+  urlPathName: string
+}>()
 </script>
 
 <template>
@@ -14,7 +18,7 @@ import { sidebarMenuList } from "@/types/Menu.ts";
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem v-for="menuItem in group.items" :key="menuItem.title">
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton asChild :is-active="props.urlPathName === menuItem.url">
                   <a :href="menuItem.url">
                     <component :is="menuItem.icon" />
                     <span>{{menuItem.title}}</span>
