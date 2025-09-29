@@ -21,7 +21,7 @@ const props = defineProps<{
                 <SidebarMenuButton asChild :is-active="props.urlPathName === menuItem.url">
                   <a :href="menuItem.url">
                     <component :is="menuItem.icon" />
-                    <span>{{menuItem.title}}</span>
+                    <span>{{menuItem.title}} - {{menuItem.url}}</span>
                   </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -39,7 +39,7 @@ const props = defineProps<{
             <SidebarTrigger
               ref="theSidebarTrigger"
               class="cursor-pointer" />
-            Pendiente
+            {{props.urlPathName}}
           </div>
           <div class="flex items-center gap-2">
 <!--            <Colortoggle />-->
