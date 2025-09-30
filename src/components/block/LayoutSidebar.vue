@@ -1,16 +1,39 @@
 <script setup lang="ts">
 import "@/styles/global.css";
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import { authClient } from '@/lib/auth-client.ts';
 import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarInset, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from "@/components/ui/sidebar";
 import { sidebarMenuList } from "@/types/Menu.ts";
 import ColorToggle from '@/components/block/ColorToggle.vue'
-// import {Loader} from "lucide-vue-next";
+import { Loader } from "lucide-vue-next";
 
 const props = defineProps<{
   urlPathName: string
 }>()
+const isLoading = ref<boolean>(true);
+const sessionData = ref();
+authClient.getSession().then((res) => {
+  sessionData.value = res.data;
+  isLoading.value = false;
+});
 
-// remove last character if it is slash character:
+const computedMenu = computed(() => {
+  if (!sessionData.value?.roles) return sidebarMenuList.map(group => {
+    return {
+      ...group,
+      items: group.items.filter(x => !x.id)
+    }
+  });
+
+  const groups = sidebarMenuList.map(group => {
+    return {
+      ...group,
+      items: group.items.filter(x => !x.id || sessionData.value?.roles.includes(x.id))
+    }
+  });
+
+  return groups.filter(x => x.items.length > 0);
+});
 const formattedUrlPathName = computed(() => {
   const lastCharacter = props.urlPathName.charAt(props.urlPathName.length - 1);
   return (lastCharacter === '/' && props.urlPathName.length > 1)
@@ -36,7 +59,7 @@ const routeTitle = computed(() => {
   <SidebarProvider>
     <Sidebar collapsible="icon" variant="sidebar"  >
       <SidebarContent>
-        <SidebarGroup v-for="(group) in sidebarMenuList" :key="group.title">
+        <SidebarGroup v-for="(group) in computedMenu" :key="group.title">
           <SidebarGroupLabel>{{ group.title }}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -51,7 +74,7 @@ const routeTitle = computed(() => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-<!--        <Loader v-if="isLoading" class="animate-spin size-6 w-full" />-->
+        <Loader v-if="isLoading" class="animate-spin size-6 w-full" />
       </SidebarContent>
     </Sidebar>
     <SidebarInset>
