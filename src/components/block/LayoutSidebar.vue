@@ -3,6 +3,7 @@ import "@/styles/global.css";
 import { computed } from "vue";
 import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarInset, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from "@/components/ui/sidebar";
 import { sidebarMenuList } from "@/types/Menu.ts";
+import ColorToggle from '@/components/block/ColorToggle.vue'
 // import {Loader} from "lucide-vue-next";
 
 const props = defineProps<{
@@ -64,7 +65,7 @@ const routeTitle = computed(() => {
             {{ routeTitle }}
           </div>
           <div class="flex items-center gap-2">
-<!--            <Colortoggle />-->
+            <ColorToggle />
 <!--            <BlocksUserDropdown />-->
           </div>
         </div>
