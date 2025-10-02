@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { useAuthSessionQueries } from '@/composables/queries/useAuthSessionQueries.ts'
 import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarInset, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from "@/components/ui/sidebar";
 import { sidebarMenuList } from "@/types/Menu.ts";
+import UserDropdown from "@/components/block/UserDropdown.vue";
 import ColorToggle from '@/components/block/ColorToggle.vue'
 import { Loader } from "lucide-vue-next";
 
@@ -80,7 +81,7 @@ const routeTitle = computed(() => {
           </div>
           <div class="flex items-center gap-2">
             <ColorToggle />
-<!--            <BlocksUserDropdown />-->
+            <UserDropdown />
           </div>
         </div>
       </header>
