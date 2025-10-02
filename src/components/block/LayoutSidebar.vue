@@ -1,22 +1,13 @@
 <script setup lang="ts">
-import "@/styles/global.css";
-import { computed, ref } from "vue";
-import { authClient } from '@/lib/auth-client.ts';
+import { computed } from "vue";
+import { useAuthSessionQueries } from '@/composables/queries/useAuthSessionQueries.ts'
 import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarInset, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from "@/components/ui/sidebar";
 import { sidebarMenuList } from "@/types/Menu.ts";
 import ColorToggle from '@/components/block/ColorToggle.vue'
 import { Loader } from "lucide-vue-next";
 
-const props = defineProps<{
-  urlPathName: string
-}>()
-const isLoading = ref<boolean>(true);
-const sessionData = ref();
-authClient.getSession().then((res) => {
-  sessionData.value = res.data;
-  isLoading.value = false;
-});
-
+const props = defineProps<{ urlPathName: string }>();
+const { sessionData, isFetchingSession } = useAuthSessionQueries();
 const computedMenu = computed(() => {
   if (!sessionData.value?.roles) return sidebarMenuList.map(group => {
     return {
@@ -74,7 +65,7 @@ const routeTitle = computed(() => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <Loader v-if="isLoading" class="animate-spin size-6 w-full" />
+        <Loader v-if="isFetchingSession" class="animate-spin size-6 w-full" />
       </SidebarContent>
     </Sidebar>
     <SidebarInset>
