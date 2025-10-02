@@ -26,10 +26,14 @@ const { pathname } = Astro.url;
 <html lang="en" style="overscroll-behavior: none">
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.ico" />
+  <link rel="manifest" href="/site.webmanifest" />
   <meta name="viewport" content="width=device-width" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="generator" content={Astro.generator} />
-  <title>Astro</title>
+  <title>Framework</title>
 </head>
 
 <LayoutSidebar client:load urlPathName={pathname}>
