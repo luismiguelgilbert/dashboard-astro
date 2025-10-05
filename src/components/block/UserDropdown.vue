@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import { authClient } from '@/lib/auth-client.ts';
 import { computed } from "vue";
-import {useAuthSessionQueries} from "@/composables/queries/useAuthSessionQueries.ts";
+import { useAuthSessionQueries } from "@/composables/queries/useAuthSessionQueries.ts";
 import { Settings2, LogOut } from "lucide-vue-next";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -18,7 +19,8 @@ const userInitials = computed<string>(() => sessionData.value?.user.name.split('
 const closeSession = async () => {
   try {
     await signOutUser();
-    window.location.href = '/login';
+    // await authClient.signOut()
+    // window.location.href = '/login';
   } catch {
     console.error('Error during logout');
   }
