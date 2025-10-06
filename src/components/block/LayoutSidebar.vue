@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import { useAuthSessionQueries } from '@/composables/queries/useAuthSessionQueries.ts'
 import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarInset, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger } from "@/components/ui/sidebar";
 import { sidebarMenuList } from "@/types/Menu.ts";
 import UserDropdown from "@/components/block/UserDropdown.vue";
 import ColorToggle from '@/components/block/ColorToggle.vue'
-import { Loader } from "lucide-vue-next";
+// import { Loader } from "lucide-vue-next";
 
-const props = defineProps<{ urlPathName: string }>();
-const { sessionData, isFetchingSession } = useAuthSessionQueries();
+const props = defineProps<{
+  urlPathName: string,
+  permissions?: string[],
+  user: import("better-auth").User | null,
+  session: import("better-auth").Session | null,
+}>();
+
 const computedMenu = computed(() => {
-  if (!sessionData.value?.roles) return sidebarMenuList.map(group => {
+  if (!props.permissions) return sidebarMenuList.map(group => {
     return {
       ...group,
       items: group.items.filter(x => !x.id)
@@ -20,7 +24,7 @@ const computedMenu = computed(() => {
   const groups = sidebarMenuList.map(group => {
     return {
       ...group,
-      items: group.items.filter(x => !x.id || sessionData.value?.roles.includes(x.id))
+      items: group.items.filter(x => !x.id || props.permissions?.includes(x.id))
     }
   });
 
@@ -66,7 +70,7 @@ const routeTitle = computed(() => {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <Loader v-if="isFetchingSession" class="animate-spin size-6 w-full" />
+<!--        <Loader v-if="isFetchingSession" class="animate-spin size-6 w-full" />-->
       </SidebarContent>
     </Sidebar>
     <SidebarInset>
@@ -81,11 +85,13 @@ const routeTitle = computed(() => {
           </div>
           <div class="flex items-center gap-2">
             <ColorToggle />
-            <UserDropdown />
+            <UserDropdown :user="props.user" />
           </div>
         </div>
       </header>
       <main class="mt-24 px-2 md:mt-20 md:px-4">
+        user: {{props.user}}<br><br>
+        session: {{props.session}}<br><br>
         <slot />
       </main>
     </SidebarInset>

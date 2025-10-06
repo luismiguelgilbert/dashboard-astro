@@ -1,7 +1,6 @@
 import { betterAuth } from "better-auth";
-import { customSession, username } from "better-auth/plugins";
+import { username } from "better-auth/plugins";
 import { Pool } from "pg";
-import dbConnection from '@/lib/db.ts'
 
 export const auth = betterAuth({
   database: new Pool({
@@ -18,27 +17,8 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: false,
   },
-  plugins: [
-    username(),
-    customSession(async ({ user, session }) => {
-      const userQuery = await dbConnection.query(`select
-        b.sys_link_id  
-        from sys_users a
-        inner join sys_profiles_links b on a.sys_profile_id = b.sys_profile_id
-        where a.email = '${user.email}'
---         and b.sys_link_id != '010100'
-      `);
-      const roles = userQuery.rows.map(item => item.sys_link_id);
-      return {
-        roles: roles,
-        user: user,
-        session,
-      };
-    }),
-  ],
-  advanced: {
-    cookiePrefix: 'bitt'
-  },
+  plugins: [ username() ],
+  advanced: { cookiePrefix: 'bitt' },
   session: {
     expiresIn: 60 * 60 * 24, // 1 day
     cookieCache: {

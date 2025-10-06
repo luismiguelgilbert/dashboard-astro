@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { authClient } from '@/lib/auth-client.ts';
 import { computed } from "vue";
-import { useAuthSessionQueries } from "@/composables/queries/useAuthSessionQueries.ts";
 import { Settings2, LogOut } from "lucide-vue-next";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -13,14 +12,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const { sessionData, signOutUser } = useAuthSessionQueries();
-const userInitials = computed<string>(() => sessionData.value?.user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'NA');
+const props = defineProps<{
+  user: import("better-auth").User | null,
+}>();
+
+const userInitials = computed<string>(() => props.user?.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) || 'NA');
 
 const closeSession = async () => {
   try {
-    await signOutUser();
-    // await authClient.signOut()
-    // window.location.href = '/login';
+    await authClient.signOut();
+    location.href="/login";
   } catch {
     console.error('Error during logout');
   }
@@ -34,9 +35,9 @@ const closeSession = async () => {
         class="cursor-pointer h-10 w-10">
         <!-- <AvatarImage src="https://github.com/unovue.png" alt="@unovue" /> -->
         <AvatarImage
-          v-if="sessionData?.user.image"
-          :src="sessionData.user.image"
-          :alt="sessionData.user.email" />
+          v-if="props.user?.image"
+          :src="props.user.image"
+          :alt="props.user.email" />
         <AvatarFallback class="text-lg md:text-lg">
           {{ userInitials }}
         </AvatarFallback>
@@ -44,7 +45,7 @@ const closeSession = async () => {
     </DropdownMenuTrigger>
     <DropdownMenuContent class="w-56">
       <DropdownMenuLabel>
-        {{ sessionData?.user.email }}
+        {{ props.user?.email }}
       </DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuItem class="cursor-pointer">

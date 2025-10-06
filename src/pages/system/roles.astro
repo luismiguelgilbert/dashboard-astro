@@ -1,6 +1,11 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro'
+const hasAccess = Astro.locals.permissions?.includes('010200');
+if (!hasAccess) {
+  return Astro.redirect("/");
+}
 ---
 <MainLayout>
     <h1>Roles here</h1>
+  hasAccess: {hasAccess}
 </MainLayout>

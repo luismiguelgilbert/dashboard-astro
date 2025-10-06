@@ -2,6 +2,9 @@
 import "@/styles/global.css";
 import LayoutSidebar from '@/components/block/LayoutSidebar.vue';
 const { pathname } = Astro.url;
+const permissions = Astro.locals.permissions;
+const user = Astro.locals.user;
+const session = Astro.locals.session;
 ---
 
 <script is:inline>
@@ -36,7 +39,12 @@ const { pathname } = Astro.url;
   <title>Framework</title>
 </head>
 
-<LayoutSidebar client:load urlPathName={pathname}>
+<LayoutSidebar
+  client:load
+  urlPathName={pathname}
+  permissions={permissions}
+  session={session}
+  user={user}>
   <slot />
 </LayoutSidebar>
 </html>
