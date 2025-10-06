@@ -8,7 +8,7 @@ import ColorToggle from '@/components/block/ColorToggle.vue'
 
 const props = defineProps<{
   urlPathName: string,
-  permissions?: string[],
+  permissions?: string,
   user: import("better-auth").User | null,
   session: import("better-auth").Session | null,
 }>();
