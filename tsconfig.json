@@ -11,6 +11,10 @@
       "@layouts": ["./src/layouts/*"],
     },
     "strict": true,
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ]
   }
-  
 }
