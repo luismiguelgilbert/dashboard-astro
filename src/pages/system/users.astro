@@ -4,7 +4,16 @@ const hasAccess = Astro.locals.permissions?.includes('010100');
 if (!hasAccess) {
   return Astro.redirect("/");
 }
+
+import db from '@/lib/db';
+const resultset = await db.query(`select user_name, user_lastname, email, is_active
+  from sys_users
+  where user_lastname ilike '%gilbert%'
+  and is_active = True`);
 ---
 <MainLayout>
-    <h1>Users here</h1>
+  <h1>Users here</h1>
+  {resultset.rows.map((item) => (
+    <li>{item.user_name} {item.user_lastname} - {item.email} - {item.is_active}</li>
+  ))}
 </MainLayout>
