@@ -8,7 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "pnpm oxlint --type-aware"
+    "lint": "pnpm oxlint --type-aware && pnpm exec prettier . --write"
   },
   "dependencies": {
     "@astrojs/vercel": "^8.2.8",
