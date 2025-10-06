@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import "@/styles/global.css";
+import '@/styles/global.css';
 import { ref } from 'vue';
-import { authClient } from '@/lib/auth-client.ts'
+import { authClient } from '@/lib/auth-client.ts';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { DatabaseZap, LogIn, Loader } from "lucide-vue-next";
+import { DatabaseZap, LogIn, Loader } from 'lucide-vue-next';
 
 const status = ref<boolean>(false);
 const credentials = ref({
@@ -28,18 +34,22 @@ const login = async () => {
 </script>
 
 <template>
-  <div class="w-full sm:grid sm:grid-cols-2 sm:min-h-[calc(100dvh)] px-5 sm:px-0">
+  <div
+    class="w-full sm:grid sm:grid-cols-2 sm:min-h-[calc(100dvh)] px-5 sm:px-0"
+  >
     <div class="flex items-center justify-center sm:py-12">
       <div class="mx-auto grid w-[350px] gap-6">
-        <Card class="w-[350px] mt-0 md:mt-12 border-0 md:border shadow-none md:shadow" >
+        <Card
+          class="w-[350px] mt-0 md:mt-12 border-0 md:border shadow-none md:shadow"
+        >
           <CardHeader>
             <CardTitle>Bienvenido a Framework</CardTitle>
-            <CardDescription>Ingrese sus credencial para continuar</CardDescription>
+            <CardDescription
+              >Ingrese sus credencial para continuar</CardDescription
+            >
           </CardHeader>
           <CardContent>
-            <div
-              id="signin-form"
-              class="padding-safe grid gap-4">
+            <div id="signin-form" class="padding-safe grid gap-4">
               <form class="grid gap-2 gap-y-5">
                 <div class="grid w-full max-w-sm items-center gap-1.5">
                   <Label for="user_name">Usuario</Label>
@@ -49,7 +59,8 @@ const login = async () => {
                       type="text"
                       name="email"
                       autocomplete="username"
-                      :disabled="status" />
+                      :disabled="status"
+                    />
                   </div>
                 </div>
                 <div class="grid w-full max-w-sm items-center gap-1.5">
@@ -60,7 +71,8 @@ const login = async () => {
                       type="password"
                       name="password"
                       autocomplete="current-password"
-                      :disabled="status" />
+                      :disabled="status"
+                    />
                   </div>
                 </div>
               </form>
@@ -68,7 +80,8 @@ const login = async () => {
               <Button
                 class="h-12 w-full mt-2 cursor-pointer justify-between"
                 :disabled="status"
-                @click="login">
+                @click="login"
+              >
                 <Loader v-if="status" class="animate-spin size-6" />
                 Ingresar
                 <LogIn name="i-lucide-log-in" class="size-6" />
@@ -79,7 +92,9 @@ const login = async () => {
         </Card>
       </div>
     </div>
-    <div class="hidden bg-neutral-950 sm:flex items-center justify-center py-2 sm:py-12">
+    <div
+      class="hidden bg-neutral-950 sm:flex items-center justify-center py-2 sm:py-12"
+    >
       <div class="flex items-center gap-x-2">
         <DatabaseZap class="h-24 w-24 text-9xl text-primary-400 text-white" />
         <div class="grid grid-cols-1">
@@ -95,6 +110,4 @@ const login = async () => {
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

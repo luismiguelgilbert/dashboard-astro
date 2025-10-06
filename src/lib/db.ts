@@ -1,4 +1,4 @@
-import { Pool } from "pg";
+import { Pool } from 'pg';
 
 const db = new Pool({
   host: import.meta.env.DATABASE_HOST,
@@ -13,6 +13,6 @@ const db = new Pool({
 
 // Optional: Handle errors on idle clients
 db.on('error', (err) => console.error('Unexpected error on idle client', err));
-db.on('connect', ()=> console.log('connected..'));
+db.on('connect', () => console.log('connected..'));
 
 export default db;

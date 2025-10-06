@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue"
-import { PanelLeft } from "lucide-vue-next"
-import { cn } from "@/lib/utils"
-import { Button } from '@/components/ui/button'
-import { useSidebar } from "./utils"
+import type { HTMLAttributes } from 'vue';
+import { PanelLeft } from 'lucide-vue-next';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { useSidebar } from './utils';
 
 const props = defineProps<{
-  class?: HTMLAttributes["class"]
-}>()
+  class?: HTMLAttributes['class'];
+}>();
 
 const { open, openMobile } = useSidebar();
 const toggleSidebar = () => {
   open.value = !open.value;
-  openMobile.value = !openMobile.value
+  openMobile.value = !openMobile.value;
 };
-const closeMobileDrawer = () => openMobile.value = false;
+const closeMobileDrawer = () => (openMobile.value = false);
 
 defineExpose({ toggleSidebar, closeMobileDrawer });
 </script>
@@ -25,6 +25,7 @@ defineExpose({ toggleSidebar, closeMobileDrawer });
     data-sidebar="trigger"
     data-slot="sidebar-trigger"
     :size="40"
-    @click="toggleSidebar" />
+    @click="toggleSidebar"
+  />
   <span class="sr-only">Toggle Sidebar</span>
 </template>

@@ -1,4 +1,4 @@
-import {auth} from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import cryptr from '@/lib/crypt';
 
 const protectedRoutes = [
@@ -10,10 +10,14 @@ const protectedRoutes = [
 export const onRequest = async (context, next) => {
   try {
     console.time('session perfCheck');
-    const isAuthed = await auth.api.getSession({ headers: context.request.headers });
+    const isAuthed = await auth.api.getSession({
+      headers: context.request.headers,
+    });
     console.timeEnd('session perfCheck');
-    
-    const permissionsEncrypted = context.cookies.get('bitt.session_permissions');
+
+    const permissionsEncrypted = context.cookies.get(
+      'bitt.session_permissions',
+    );
     if (permissionsEncrypted) {
       context.locals.permissions = cryptr.decrypt(permissionsEncrypted.value);
     }
@@ -30,8 +34,8 @@ export const onRequest = async (context, next) => {
     }
 
     return next();
-  } catch(err) {
+  } catch (err) {
     console.log(err);
     return context.redirect('/login');
   }
-}
+};

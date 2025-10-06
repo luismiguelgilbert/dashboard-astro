@@ -8,7 +8,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@components": ["./src/components/*"],
-      "@layouts": ["./src/layouts/*"],
+      "@layouts": ["./src/layouts/*"]
     },
     "strict": true,
     "plugins": [

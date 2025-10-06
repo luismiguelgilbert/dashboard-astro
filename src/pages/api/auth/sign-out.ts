@@ -1,5 +1,5 @@
-import type { APIRoute } from "astro";
-import { auth } from "@/lib/auth.ts";
+import type { APIRoute } from 'astro';
+import { auth } from '@/lib/auth.ts';
 
 export const POST: APIRoute = async ({ cookies, request }) => {
   try {
@@ -8,9 +8,8 @@ export const POST: APIRoute = async ({ cookies, request }) => {
     cookies.delete('bitt.session_permissions', { path: '/' });
     await auth.api.signOut({ headers: request.headers });
     return new Response();
-  }
-  catch (error) {
+  } catch (error) {
     console.error(error);
     return new Response();
   }
-}
+};

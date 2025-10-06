@@ -1,17 +1,13 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from '@tailwindcss/vite';
 import vue from '@astrojs/vue';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  integrations: [
-    vue({ appEntrypoint: '@/lib/VueQueryPlugin.ts' })
-  ],
+  integrations: [vue({ appEntrypoint: '@/lib/VueQueryPlugin.ts' })],
   vite: {
-    plugins: [
-      tailwindcss(),
-    ],
+    plugins: [tailwindcss()],
   },
   output: 'server',
   adapter: vercel(),
