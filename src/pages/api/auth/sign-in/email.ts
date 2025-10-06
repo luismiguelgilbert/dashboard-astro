@@ -23,8 +23,6 @@ export const POST: APIRoute = async ({ request }) => {
     where sys_users.email = '${userEmail}'`);
   // Encrypt and add [bitt.session_permissions] cookie
   const roles = userQuery.rows.map(item => item.sys_link_id);
-  
-  
   const encryptedString = cryptr.encrypt(roles.join(','));
   response.headers.append("set-cookie", `bitt.session_permissions=${encryptedString}; Max-Age=86400; Path=/; HttpOnly; SameSite=Lax`);
 
