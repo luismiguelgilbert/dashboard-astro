@@ -9,7 +9,7 @@ import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts,vue}'],
+    files: ['src/*.{js,mjs,cjs,ts,mts,cts,vue}'],
     plugins: { js },
     extends: ['js/recommended'],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
@@ -17,29 +17,29 @@ export default defineConfig([
   tseslint.configs.recommended,
   pluginVue.configs['flat/essential'],
   {
-    files: ['**/*.vue'],
+    files: ['src/*.vue'],
     languageOptions: { parserOptions: { parser: tseslint.parser } },
   },
   {
-    files: ['**/*.json'],
+    files: ['src/*.json'],
     plugins: { json },
     language: 'json/json',
     extends: ['json/recommended'],
   },
   {
-    files: ['**/*.jsonc'],
+    files: ['src/*.jsonc'],
     plugins: { json },
     language: 'json/jsonc',
     extends: ['json/recommended'],
   },
   {
-    files: ['**/*.md'],
+    files: ['src/*.md'],
     plugins: { markdown },
     language: 'markdown/commonmark',
     extends: ['markdown/recommended'],
   },
   {
-    files: ['**/*.css'],
+    files: ['src/*.css'],
     plugins: { css },
     language: 'css/css',
     extends: ['css/recommended'],
@@ -50,4 +50,7 @@ export default defineConfig([
       quotes: ['error', 'single'],
     },
   },
+  {
+    ignores: ['.astro/', '.idea/', '.vercel/', 'dist/', 'node_modules/'],
+  }
 ]);

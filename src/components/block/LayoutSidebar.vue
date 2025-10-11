@@ -110,8 +110,6 @@ const routeTitle = computed(() => {
         </div>
       </header>
       <main class="mt-24 px-2 md:mt-20 md:px-4">
-        user: {{ props.user }}<br /><br />
-        session: {{ props.session }}<br /><br />
         <slot />
       </main>
     </SidebarInset>
