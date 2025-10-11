@@ -17,7 +17,7 @@ export default defineConfig([
   tseslint.configs.recommended,
   pluginVue.configs['flat/essential'],
   {
-    files: ['src/*.vue'],
+    files: ['**/*.vue'],
     languageOptions: { parserOptions: { parser: tseslint.parser } },
   },
   {
@@ -48,6 +48,7 @@ export default defineConfig([
     rules: {
       semi: ['error', 'always'],
       quotes: ['error', 'single'],
+      'vue/multi-word-component-names': 'off',
     },
   },
   {
