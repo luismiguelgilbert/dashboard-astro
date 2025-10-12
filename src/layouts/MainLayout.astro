@@ -1,5 +1,6 @@
 ---
 import "@/styles/global.css";
+import { ClientRouter } from 'astro:transitions';
 import LayoutSidebar from '@/components/block/LayoutSidebar.vue';
 const { pathname } = Astro.url;
 const permissions = Astro.locals.permissions;
@@ -36,6 +37,7 @@ const session = Astro.locals.session;
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="generator" content={Astro.generator} />
+  <ClientRouter />
   <title>Framework</title>
 </head>
 

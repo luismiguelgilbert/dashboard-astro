@@ -109,7 +109,7 @@ const routeTitle = computed(() => {
           </div>
         </div>
       </header>
-      <main class="mt-24 px-2 md:mt-20 md:px-4">
+      <main class="mt-16">
         <slot />
       </main>
     </SidebarInset>
