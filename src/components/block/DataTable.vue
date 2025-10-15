@@ -62,6 +62,5 @@ const table = useVueTable({
       </TableBody>
     </Table>
     <br />
-    <br />
   </div>
 </template>

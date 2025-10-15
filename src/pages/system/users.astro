@@ -2,7 +2,10 @@
 import MainLayout from '@/layouts/MainLayout.astro';
 import Toolbar from '@/components/block/Toolbar.vue';
 import DataTable from '@/components/block/DataTable.vue';
+import DataPagination from '@/components/block/DataPagination.vue';
 import type { ColumnDef } from '@tanstack/vue-table';
+
+
 const hasAccess = Astro.locals.permissions?.includes('010100');
 if (!hasAccess) {
   return Astro.redirect("/");
@@ -45,9 +48,9 @@ export const columns: ColumnDef<unknown>[] = [
 ]
 ---
 <MainLayout>
-  <Toolbar>
+  <!-- <Toolbar>
     content goes here
-  </Toolbar>
+  </Toolbar> -->
   <!-- <footer class="sticky top-16 w-full bg-green-400">
     pagination should be toolbar goes here
   </footer> -->
@@ -58,7 +61,9 @@ export const columns: ColumnDef<unknown>[] = [
   <!-- {resultset.rows.map((item) => (
     <li>{item.user_name} {item.user_lastname} - {item.email} - {item.is_active}</li>
   ))} -->
-  <footer class="sticky bottom-0 w-full bg-green-400">
-    pagination should be here
-  </footer>
+  <Toolbar position={'bottom'}>
+    <DataPagination client:load />
+  </Toolbar>
+  <!-- <footer class="sticky bottom-0 w-full">
+  </footer> -->
 </MainLayout>
