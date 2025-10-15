@@ -95,7 +95,7 @@ const routeTitle = computed(() => {
       </SidebarContent>
     </Sidebar>
     <SidebarInset>
-      <header class="w-full padding-safe my-header flex h-16 shrink-0 fixed border-b dark:border-b-neutral-800 bg-white dark:bg-zinc-900">
+      <header class="z-50 w-full padding-safe my-header flex h-16 shrink-0 fixed border-b dark:border-b-neutral-800 bg-white dark:bg-zinc-900">
         <div class="flex w-full p-2 items-center justify-between">
           <div class="flex items-center gap-2">
             <SidebarTrigger ref="theSidebarTrigger" class="cursor-pointer" />

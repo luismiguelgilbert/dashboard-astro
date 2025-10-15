@@ -1,5 +1,8 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
+import Toolbar from '@/components/block/Toolbar.vue';
+import DataTable from '@/components/block/DataTable.vue';
+import type { ColumnDef } from '@tanstack/vue-table';
 const hasAccess = Astro.locals.permissions?.includes('010100');
 if (!hasAccess) {
   return Astro.redirect("/");
@@ -8,18 +11,53 @@ if (!hasAccess) {
 import db from '@/lib/db';
 const resultset = await db.query(`select user_name, user_lastname, email, is_active
   from sys_users
-  where is_active = True`);
+  where is_active = True
+  limit 25`);
+
+
+export const columns: ColumnDef<unknown>[] = [
+  {
+    accessorKey: 'user_name',
+    header: 'Nombres',
+    // header: () => h('div', { class: 'text-right' }, 'Amount'),
+    // cell: ({ row }) => {
+      // const amount = Number.parseFloat(row.getValue('amount'))
+      // const formatted = new Intl.NumberFormat('en-US', {
+      //   style: 'currency',
+      //   currency: 'USD',
+      // }).format(amount)
+
+      // return h('div', { class: 'text-right font-medium' }, formatted)
+    // },
+  },
+  {
+    accessorKey: 'user_lastname',
+    header: 'Apellidos',
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email',
+  },
+  {
+    accessorKey: 'is_active',
+    header: 'Activo',
+  },
+]
 ---
 <MainLayout>
-  <footer class="sticky top-16 w-full bg-green-400">
+  <Toolbar>
+    content goes here
+  </Toolbar>
+  <!-- <footer class="sticky top-16 w-full bg-green-400">
     pagination should be toolbar goes here
-  </footer>
-  <div class="bg-red-300">
+  </footer> -->
+  <!-- <div class="bg-red-300">
     <h1>Users here</h1>
-  </div>
-  {resultset.rows.map((item) => (
+  </div> -->
+  <DataTable columns={columns} data={resultset.rows} />
+  <!-- {resultset.rows.map((item) => (
     <li>{item.user_name} {item.user_lastname} - {item.email} - {item.is_active}</li>
-  ))}
+  ))} -->
   <footer class="sticky bottom-0 w-full bg-green-400">
     pagination should be here
   </footer>

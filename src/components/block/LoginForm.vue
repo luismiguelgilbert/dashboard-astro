@@ -34,9 +34,7 @@ const login = async () => {
 </script>
 
 <template>
-  <div
-    class="w-full sm:grid sm:grid-cols-2 sm:min-h-[calc(100dvh)] px-5 sm:px-0"
-  >
+  <div class="w-full sm:grid sm:grid-cols-2 sm:min-h-[calc(100dvh)] px-5 sm:px-0">
     <div class="flex items-center justify-center sm:py-12">
       <div class="mx-auto grid w-[350px] gap-6">
         <Card
