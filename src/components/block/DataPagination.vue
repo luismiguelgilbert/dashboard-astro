@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import {
   Pagination,
   PaginationContent,
@@ -7,8 +8,12 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-const currentPage = defineModel({ type: Number, default: 1 });
-// const lastName = defineModel('lastName')
+
+const props = defineProps<{
+  initialPage?: number;
+}>();
+
+const currentPage = ref<number>(props.initialPage ?? 1);
 </script>
 
 <template>

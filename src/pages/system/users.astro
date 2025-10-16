@@ -1,21 +1,48 @@
 ---
+import z from 'zod/v4';
 import MainLayout from '@/layouts/MainLayout.astro';
 import Toolbar from '@/components/block/Toolbar.vue';
 import DataTable from '@/components/block/DataTable.vue';
 import DataPagination from '@/components/block/DataPagination.vue';
 import type { ColumnDef } from '@tanstack/vue-table';
 
+// TODO: move this schema to a common place to be reused
+const ParamsSchema = z.object({
+  sort: z.literal(['user_name', 'user_lastname', 'email']),
+  page: z.coerce.number(),
+});
+const DefaultParamsSchema = ParamsSchema.extend({
+  sort: ParamsSchema.shape.sort.catch('user_name'),
+  page: ParamsSchema.shape.page.catch(1),
+});
 
-const hasAccess = Astro.locals.permissions?.includes('010100');
-if (!hasAccess) {
-  return Astro.redirect("/");
+const hasAccess = Astro.locals.permissions?.includes('010100'); if (!hasAccess) { return Astro.redirect("/") }
+
+
+const params = Astro.url.searchParams;
+// When no queryparams set default params and redirect. Else, check if valid and proceed; or redirect to fixed url on error
+if (params.toString() === '') {
+  Object.entries(ParamsSchema.parse({})).forEach(([key, value]) => params.set(key, value.toString()));
+  return Astro.redirect(Astro.url.href);
+} else {
+  if (ParamsSchema.safeParse(Object.fromEntries(params.entries())).error) {
+    Object.entries(DefaultParamsSchema.parse(Object.fromEntries(params.entries()))).forEach(([key, value]) => params.set(key, value.toString()));
+    return Astro.redirect(Astro.url.href);
+  }
 }
 
 import db from '@/lib/db';
+const limit = 25;
+const sort = ParamsSchema.parse(Object.fromEntries(params.entries())).sort;
+const page = ParamsSchema.parse(Object.fromEntries(params.entries())).page;
+const offset = (page - 1) * limit;
+console.log({ sort, page, offset });
 const resultset = await db.query(`select user_name, user_lastname, email, is_active
   from sys_users
   where is_active = True
-  limit 25`);
+  order by ${sort}
+  limit ${limit}
+  offset ${offset}`);
 
 
 export const columns: ColumnDef<unknown>[] = [
@@ -62,7 +89,7 @@ export const columns: ColumnDef<unknown>[] = [
     <li>{item.user_name} {item.user_lastname} - {item.email} - {item.is_active}</li>
   ))} -->
   <Toolbar position={'bottom'}>
-    <DataPagination client:load />
+    <DataPagination client:load initialPage={page} />
   </Toolbar>
   <!-- <footer class="sticky bottom-0 w-full">
   </footer> -->
