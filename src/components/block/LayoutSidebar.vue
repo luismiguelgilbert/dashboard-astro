@@ -69,19 +69,13 @@ const routeTitle = computed(() => {
 <template>
   <SidebarProvider>
     <Sidebar collapsible="icon" variant="sidebar">
-      <SidebarContent>
+      <SidebarContent class="border-t">
         <SidebarGroup v-for="group in computedMenu" :key="group.title">
           <SidebarGroupLabel>{{ group.title }}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem
-                v-for="menuItem in group.items"
-                :key="menuItem.title"
-              >
-                <SidebarMenuButton
-                  asChild
-                  :is-active="menuItem.url === formattedUrlPathName"
-                >
+              <SidebarMenuItem v-for="menuItem in group.items" :key="menuItem.title">
+                <SidebarMenuButton asChild :is-active="menuItem.url === formattedUrlPathName">
                   <a :href="menuItem.url">
                     <component :is="menuItem.icon" />
                     <span>{{ menuItem.title }}</span>
@@ -95,7 +89,7 @@ const routeTitle = computed(() => {
       </SidebarContent>
     </Sidebar>
     <SidebarInset>
-      <header class="z-50 w-full padding-safe my-header flex h-16 shrink-0 fixed border-b dark:border-b-neutral-800 bg-white dark:bg-zinc-900">
+      <header class="z-50 w-full padding-safe my-header flex h-16 shrink-0 fixed border-b border-t dark:border-b-neutral-800 bg-white dark:bg-zinc-900">
         <div class="flex w-full p-2 items-center justify-between">
           <div class="flex items-center gap-2">
             <SidebarTrigger ref="theSidebarTrigger" class="cursor-pointer" />

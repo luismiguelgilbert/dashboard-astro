@@ -6,7 +6,7 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   devToolbar: { enabled: false },
-  integrations: [vue({ appEntrypoint: '@/lib/VueQueryPlugin.ts' })],
+  integrations: [vue({ appEntrypoint: '@/lib/VueQueryPlugin.ts', devtools: false })],
   vite: {
     plugins: [tailwindcss()],
   },
