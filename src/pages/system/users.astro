@@ -1,17 +1,7 @@
 ---
-import z from 'zod/v4';
+import { ParamsSchema, DefaultParamsSchema } from '@/types/Users'
 import MainLayout from '@/layouts/MainLayout.astro';
 import UsersPage from '@/components/pages/system/UsersPage.vue';
-
-// TODO: move this schema to a common place to be reused
-const ParamsSchema = z.object({
-  sort: z.literal(['user_name', 'user_lastname', 'email']),
-  page: z.coerce.number(),
-});
-const DefaultParamsSchema = ParamsSchema.extend({
-  sort: ParamsSchema.shape.sort.catch('user_name'),
-  page: ParamsSchema.shape.page.catch(1),
-});
 
 const hasAccess = Astro.locals.permissions?.includes('010100'); if (!hasAccess) { return Astro.redirect("/") }
 
@@ -29,34 +19,11 @@ const sort = ParamsSchema.parse(Object.fromEntries(params.entries())).sort;
 const page = ParamsSchema.parse(Object.fromEntries(params.entries())).page;
 const apiOrigin = Astro.url.origin;
 const res = await fetch(`${apiOrigin}/api/system/users?sort=${sort}&page=${page}`);
-const data = await res.json();
+const response = await res.json();
 ---
 
 <MainLayout>
   <UsersPage
     client:load
-    data={data.data} />
-  <!-- <Toolbar>
-    content goes here
-  </Toolbar> -->
-  <!-- <footer class="sticky top-16 w-full bg-green-400">
-    pagination should be toolbar goes here
-  </footer> -->
-  <!-- <div class="bg-red-300">
-    <h1>Users here</h1>
-  </div> -->
-
-  <!-- <DataTable columns={columns} data={resultset.rows} /> -->
-
-  <!-- {resultset.rows.map((item) => (
-    <li>{item.user_name} {item.user_lastname} - {item.email} - {item.is_active}</li>
-  ))} -->
-  <!-- <Toolbar position={'bottom'}>
-    <DataPagination
-      id="datapagination-element"
-      client:load
-      initialPage={page} />
-  </Toolbar> -->
-  <!-- <footer class="sticky bottom-0 w-full">
-  </footer> -->
+    data={response} />
 </MainLayout>

@@ -4,13 +4,17 @@ import db from '@/lib/db';
 export const GET: APIRoute = async ({ url }) => {
   // console.log({params});
   // console.log({request});
-  console.log({url});
   const page = Number(url.searchParams.get('page') ?? 1);
   const sort = String(url.searchParams.get('sort') ?? 1);
   const limit = 25;
   const offset = (page - 1) * limit;
   // const sort = Number(url.searchParams.get('sort') ?? 1);
-  const resultset = await db.query(`select user_name, user_lastname, email, is_active
+  const resultset = await db.query(`select 
+      user_name,
+      user_lastname,
+      email,
+      is_active,
+      count(*) over() as full_count
     from sys_users
     where is_active = True
     order by ${sort}
@@ -18,14 +22,11 @@ export const GET: APIRoute = async ({ url }) => {
     offset ${offset}`);
   return new Response(
     JSON.stringify({
-      data: resultset.rows,
-      meta: {
-        count: 500,
-      }
+      rows: resultset.rows,
+      count: resultset.rows[0]?.full_count ?? 0,
+      rowsPerPage: limit,
+      currentPage: page,
     }),
-    // JSON.stringify({
-    //   message: 'This was a GET!',
-    // }),
   );
 };
 
