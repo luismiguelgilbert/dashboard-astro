@@ -6,9 +6,10 @@ export const GET: APIRoute = async ({ url }) => {
   // console.log({request});
   const page = Number(url.searchParams.get('page') ?? 1);
   const sort = String(url.searchParams.get('sort') ?? 1);
+  const search = url.searchParams.get('search');
   const limit = 25;
   const offset = (page - 1) * limit;
-  // const sort = Number(url.searchParams.get('sort') ?? 1);
+
   const resultset = await db.query(`select 
       user_name,
       user_lastname,
@@ -17,6 +18,7 @@ export const GET: APIRoute = async ({ url }) => {
       count(*) over() as full_count
     from sys_users
     where is_active = True
+    ${search ? `and user_name ilike '%${search}%'` : ''}
     order by ${sort}
     limit ${limit}
     offset ${offset}`);

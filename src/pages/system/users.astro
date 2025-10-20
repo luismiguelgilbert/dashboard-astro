@@ -17,8 +17,17 @@ if (params.toString() === '') {
 
 const sort = ParamsSchema.parse(Object.fromEntries(params.entries())).sort;
 const page = ParamsSchema.parse(Object.fromEntries(params.entries())).page;
+const search = ParamsSchema.parse(Object.fromEntries(params.entries())).search;
 const apiOrigin = Astro.url.origin;
-const res = await fetch(`${apiOrigin}/api/system/users?sort=${sort}&page=${page}`);
+// const URL wil include "sort" and "page" but not "search" if undefined
+const url = new URL(`${apiOrigin}/api/system/users`);
+url.searchParams.set('sort', sort);
+url.searchParams.set('page', page.toString());
+if (search) {
+  url.searchParams.set('search', search);
+}
+
+const res = await fetch(url.toString());
 const response = await res.json();
 ---
 

@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-// import Toolbar from '@/components/block/Toolbar.vue';
+import { ref } from 'vue';
+import { CirclePlusIcon } from 'lucide-vue-next';
+import Button from '@/components/ui/button/Button.vue';
+import SearchButton from '@/components/block/SearchButton.vue';
 import DataPagination from '@/components/block/DataPagination.vue';
 import DataTable from '@/components/block/DataTable.vue';
 import type { ColumnDef } from '@tanstack/vue-table';
@@ -39,24 +41,25 @@ const columns: ColumnDef<unknown>[] = [
 ];
 
 const rows = ref(props.data.rows || []);
-const rowsCount = ref(Number(props.data.count) || 0);
-const rowsPerPage = ref(props.data.rowsPerPage || 0);
-const currentPage = ref(props.data.currentPage || 0);
+const rowsCount = ref<number>(Number(props.data.count) || 0);
+const rowsPerPage = ref<number>(props.data.rowsPerPage || 0);
+const currentPage = ref<number>(props.data.currentPage || 0);
+const search = ref<string>('');
 
 const updateUrlParameter = (key: string, value: string) => {
-    // 1. Get the current URL and its search parameters
-    const url = new URL(window.location.href);
-    const params = url.searchParams;
+  // 1. Get the current URL and its search parameters
+  const url = new URL(window.location.href);
+  const params = url.searchParams;
 
-    // 2. Set the new value for the specific key
-    params.set(key, value);
+  // 2. Set the new value for the specific key
+  params.set(key, value);
 
-    // 3. Construct the new URL path (pathname + updated search params)
-    const newUrlPath = url.pathname + '?' + params.toString() + url.hash;
+  // 3. Construct the new URL path (pathname + updated search params)
+  const newUrlPath = url.pathname + '?' + params.toString() + url.hash;
 
-    // 4. Use history.replaceState to update the URL without refreshing the page
-    // Parameters: state object (can be null), title (can be empty), URL
-    history.replaceState(null, '', newUrlPath);
+  // 4. Use history.replaceState to update the URL without refreshing the page
+  // Parameters: state object (can be null), title (can be empty), URL
+  history.replaceState(null, '', newUrlPath);
 };
 
 const fetchAndReplace = async(page: number) => {
@@ -69,26 +72,46 @@ const fetchAndReplace = async(page: number) => {
   .then(res => res.json())
   .then(response => { rows.value = response.rows; rowsCount.value = response.count; })
   .catch(error => console.error('Error:', error));
-  // const currentState = history.state;
   updateUrlParameter('page', page.toString());
-  // history.replaceState(null, '', `/system/users?page=${page}`);
 };
 
-onMounted(() => {
-  console.log('UsersPage mounted');
-});
+const searchAndReplace = async(searchString: string | undefined) => {
+  const currentURL = new URL(window.location.href);
+  const params = Object.fromEntries(currentURL.searchParams.entries());
+  console.log(currentURL);
+  if (searchString) {
+    params['search'] = searchString;
+  } else {
+    delete params['search'];
+  }
+  // converts JSON object into a URL
+  const query = new URLSearchParams(params).toString();
+  const url = `/api/system/users?${query}`;
+  
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+  .then(res => res.json())
+  .then(response => { rows.value = response.rows; rowsCount.value = response.count; })
+  .catch(error => console.error('Error:', error));
+  Object.entries(params).forEach(([key, value]) => updateUrlParameter(key, value || ''));
+};
 </script>
 
 <template>
-  <div class="flex flex-col h-[calc(100dvh-64px)]">
+  <div class="flex flex-col h-[calc(100dvh-64px)] w-full">
     <!-- Header -->
-    <header class="border-b h-10">
-      <h1 class="text-2xl font-bold">My Website Header</h1>
-      <!-- Navigation or other header content can go here -->
+    <!-- <header class="w-calc(100dvw) flex border-b h-10 items-center px-1 bg-amber-300 overflow-x-scroll"> -->
+    <header class="relative flex h-12 w-full overflow-auto items-center justify-between px-1">
+      <Button class="cursor-pointer"><CirclePlusIcon /> Nuevo</Button>
+      <SearchButton v-model="search" @update:model-value="(search) => searchAndReplace(search)" >Buscar</SearchButton>
     </header>
 
     <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto">
+    <main class="flex-1 overflow-auto">
       <DataTable
         :columns="columns"
         :data="rows" />
