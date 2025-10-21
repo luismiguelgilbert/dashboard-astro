@@ -1,4 +1,5 @@
 ---
+import type { DataResponse } from '@/types/Users';
 import { ParamsSchema, DefaultParamsSchema } from '@/types/Users'
 import MainLayout from '@/layouts/MainLayout.astro';
 import UsersPage from '@/components/pages/system/UsersPage.vue';
@@ -6,33 +7,23 @@ import UsersPage from '@/components/pages/system/UsersPage.vue';
 const hasAccess = Astro.locals.permissions?.includes('010100'); if (!hasAccess) { return Astro.redirect("/") }
 
 const params = Astro.url.searchParams;
-// When no queryparams set default params and redirect. Else, check if valid and proceed; or redirect to fixed url on error
-if (params.toString() === '') {
-  Object.entries(DefaultParamsSchema.parse({})).forEach(([key, value]) => params.set(key, value.toString()));
-  return Astro.redirect(Astro.url.href);
-} else if (ParamsSchema.safeParse(Object.fromEntries(params.entries())).error) {
-  Object.entries(DefaultParamsSchema.parse(Object.fromEntries(params.entries()))).forEach(([key, value]) => params.set(key, value.toString()));
+const isURLSearchParamsValid = ParamsSchema.safeParse(Object.fromEntries(params.entries())).success;
+const filters = isURLSearchParamsValid ? ParamsSchema.parse(Object.fromEntries(params.entries())) : DefaultParamsSchema.parse({});
+if (!isURLSearchParamsValid) {
+  Object.entries(filters).forEach(([key, value]) => value && params.set(key, value.toString()));
   return Astro.redirect(Astro.url.href);
 }
 
-const sort = ParamsSchema.parse(Object.fromEntries(params.entries())).sort;
-const page = ParamsSchema.parse(Object.fromEntries(params.entries())).page;
-const search = ParamsSchema.parse(Object.fromEntries(params.entries())).search;
+const searchParams = new URLSearchParams(Object.fromEntries(Object.entries(filters).filter(([, value]) => value != null).map(([key, value]) => [key, String(value)])));
 const apiOrigin = Astro.url.origin;
-// const URL wil include "sort" and "page" but not "search" if undefined
-const url = new URL(`${apiOrigin}/api/system/users`);
-url.searchParams.set('sort', sort);
-url.searchParams.set('page', page.toString());
-if (search) {
-  url.searchParams.set('search', search);
-}
-
+const url = new URL(`${apiOrigin}/api/system/users?${searchParams.toString()}`);
 const res = await fetch(url.toString());
-const response = await res.json();
+const response: DataResponse = await res.json();
 ---
 
 <MainLayout>
   <UsersPage
     client:load
+    filters={filters}
     data={response} />
 </MainLayout>

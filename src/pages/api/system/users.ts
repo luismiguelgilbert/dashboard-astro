@@ -7,9 +7,10 @@ export const GET: APIRoute = async ({ url }) => {
   const page = Number(url.searchParams.get('page') ?? 1);
   const sort = String(url.searchParams.get('sort') ?? 1);
   const search = url.searchParams.get('search');
-  const limit = 25;
+  const limit = 50;
   const offset = (page - 1) * limit;
 
+  console.time('[perfCheck] > /api/system/users');
   const resultset = await db.query(`select 
       user_name,
       user_lastname,
@@ -22,6 +23,8 @@ export const GET: APIRoute = async ({ url }) => {
     order by ${sort}
     limit ${limit}
     offset ${offset}`);
+  console.timeEnd('[perfCheck] > /api/system/users');
+
   return new Response(
     JSON.stringify({
       rows: resultset.rows,

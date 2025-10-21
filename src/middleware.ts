@@ -9,11 +9,11 @@ const protectedRoutes = [
 
 export const onRequest = async (context, next) => {
   try {
-    console.time('session perfCheck');
+    console.time('[perfCheck] > Session');
     const isAuthed = await auth.api.getSession({
       headers: context.request.headers,
     });
-    console.timeEnd('session perfCheck');
+    console.timeEnd('[perfCheck] > Session');
 
     const permissionsEncrypted = context.cookies.get(
       'bitt.session_permissions',

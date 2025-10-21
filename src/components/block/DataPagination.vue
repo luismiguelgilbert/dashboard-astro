@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import {
   Pagination,
   PaginationContent,
@@ -25,24 +25,22 @@ const lastRecordInPage = computed(() => {
   return potentialLast > props.rowsCount ? props.rowsCount : potentialLast;
 });
 
-const updatePage = (page: number) => {
-  if (_currentPage.value != page) {
-    _currentPage.value = page;
-    emit('update', page);
-  }
-};
+const updatePage = (page: number) => emit('update', page);
 
+watch(() => props.currentPage, (newPage) => {
+if (newPage !== _currentPage.value) { _currentPage.value = newPage; }
+});
 </script>
 
 <template>
-  <div class="flex justify-between items-center px-2 py-1">
+  <div class="flex justify-between items-center px-5 md:px-2 py-1">
     <span class="flex text-nowrap text-xs text-neutral-500">{{ firstRecordInPage }} - {{ lastRecordInPage }} de {{ props.rowsCount }}</span>
     <Pagination
       v-slot="{ page }"
+      v-model:page="_currentPage"
       :items-per-page="props.rowsPerPage"
       :total="props.rowsCount"
-      :sibling-count="1"
-      :default-page="_currentPage">
+      :sibling-count="1">
       {{ updatePage(page) }}
       <PaginationContent v-slot="{ items }">
         <PaginationFirst />
