@@ -49,6 +49,7 @@ const currentPage = ref<number>(props.data.currentPage || 0);
 const search = ref<string>(props.filters.search ?? '');
 
 const updateSearchParams = async(key: string, value: string | undefined, resetPage: boolean) => {
+  console.time('[perfCheck - fetch] > /api/system/users');
   const params = new URLSearchParams(document.location.search);
   if (value) { params.set(key, value); }
   else { params.delete(key); }
@@ -60,10 +61,11 @@ const updateSearchParams = async(key: string, value: string | undefined, resetPa
   .then(res => res.json())
   .then(response => { rows.value = response.rows; rowsCount.value = response.count; })
   .catch(error => console.error('Error:', error));
-
+  
   const currentURL = new URL(window.location.href);
   const newUrlPath = currentURL.pathname + '?' + params.toString() + currentURL.hash;
   history.replaceState(null, '', newUrlPath);
+  console.timeEnd('[perfCheck - fetch] > /api/system/users');
 };
 </script>
 
