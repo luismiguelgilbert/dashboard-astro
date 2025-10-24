@@ -108,11 +108,7 @@ const updateSearchParams = async(key: string, value: string | undefined, resetPa
           :columns="columns"
           :data="rows" />
         <Sheet v-model:open="showOptions">
-          <SheetTrigger as-child>
-            <Button variant="outline" class="cursor-pointer">
-              Right
-            </Button>
-          </SheetTrigger>
+          <SheetTrigger as-child />
           <SheetContent side="right">
             <SheetHeader>
               <SheetTitle>Ordenar</SheetTitle>
