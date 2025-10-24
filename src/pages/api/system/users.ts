@@ -2,7 +2,6 @@ import type { APIRoute } from 'astro';
 import db from '@/lib/db';
 
 export const GET: APIRoute = async ({ url }) => {
-  console.time('[perfCheck - route] > /api/system/users');
   // console.log({params});
   // console.log({request});
   const page = Number(url.searchParams.get('page') ?? 1);
@@ -32,7 +31,6 @@ export const GET: APIRoute = async ({ url }) => {
     rowsPerPage: limit,
     currentPage: page,
   });
-  console.timeEnd('[perfCheck - route] > /api/system/users');
 
   return new Response(resultStringified);
 };
