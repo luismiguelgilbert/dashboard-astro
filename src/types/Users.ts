@@ -1,14 +1,16 @@
 import z from 'zod/v4';
 
 export const ParamsSchema = z.object({
-  sort: z.literal(['user_name, id', 'user_lastname, id', 'email, id']),
+  sort: z.literal(['user_name', 'user_lastname', 'email']),
+  direction: z.literal(['asc', 'desc']),
   page: z.coerce.number(),
   search: z.string().optional().nullable(),
 });
 export type Params = z.infer<typeof ParamsSchema>;
 
 export const DefaultParamsSchema = ParamsSchema.extend({
-  sort: ParamsSchema.shape.sort.catch('user_name, id'),
+  sort: ParamsSchema.shape.sort.catch('user_name'),
+  direction: ParamsSchema.shape.direction.catch('asc'),
   page: ParamsSchema.shape.page.catch(1),
 });
 

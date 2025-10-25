@@ -6,6 +6,7 @@ export const GET: APIRoute = async ({ url }) => {
   // console.log({request});
   const page = Number(url.searchParams.get('page') ?? 1);
   const sort = String(url.searchParams.get('sort') ?? 1);
+  const direction = String(url.searchParams.get('direction') ?? 1);
   const search = url.searchParams.get('search');
   const limit = 50;
   const offset = (page - 1) * limit;
@@ -20,7 +21,7 @@ export const GET: APIRoute = async ({ url }) => {
     from sys_users
     where is_active = True
     ${search ? `and user_name ilike '%${search}%'` : ''}
-    order by ${sort}
+    order by ${sort} ${direction}
     limit ${limit}
     offset ${offset}`);
   console.timeEnd('[perfCheck - dbQuery] > /api/system/users');

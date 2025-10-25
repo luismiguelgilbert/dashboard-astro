@@ -3,7 +3,7 @@ import type { ColumnDef } from '@tanstack/vue-table';
 import type { HeroIconName } from '@/types/Utils';
 import type { Params, DataResponse } from '@/types/Users';
 import { ref } from 'vue';
-import { CirclePlusIcon } from 'lucide-vue-next';
+import IconAsync from '@/components/block/IconAsync.vue';
 import Button from '@/components/ui/button/Button.vue';
 import SearchButton from '@/components/block/SearchButton.vue';
 import DataPagination from '@/components/block/DataPagination.vue';
@@ -51,19 +51,19 @@ const sortingOptions: { label: string; description: string; value: string; icon:
   {
     label: 'Nombres',
     description: 'Ordenar lista por "Nombres" de usuario',
-    value: 'user_name, id',
+    value: 'user_name',
     icon: 'UserIcon',
   },
   {
     label: 'Apellidos',
     description: 'Ordenar lista por "Apellidos" de usuario',
-    value: 'user_lastname, id',
+    value: 'user_lastname',
     icon: 'UserCircleIcon',
   },
   {
     label: 'Email',
     description: 'Ordenar lista por "Email" de usuario',
-    value: 'email, id',
+    value: 'email',
     icon: 'EnvelopeIcon',
   },
 ];
@@ -75,6 +75,7 @@ const rowsPerPage = ref<number>(props.data.rowsPerPage || 0);
 const currentPage = ref<number>(props.data.currentPage || 0);
 const search = ref<string>(props.filters.search ?? '');
 const sort = ref<string>(props.filters.sort ?? '');
+const direction = ref<'asc'|'desc'>(props.filters.direction ?? 'asc');
 const showOptions = ref<boolean>(false);
 
 const updateSearchParams = async(key: string, value: string | undefined, resetPage: boolean) => {
@@ -102,14 +103,17 @@ const updateSearchParams = async(key: string, value: string | undefined, resetPa
 
 <template>
   <div class="flex flex-col min-h-[calc(100dvh-64px)]">
-    <header class="my-header-footer relative flex h-12 w-full overflow-auto items-center justify-between pl-2 pr-1">
-      <Button variant="outline"><CirclePlusIcon /> Nuevo</Button>
+    <header class="my-header-footer relative flex h-12 w-full overflow-auto items-center justify-between pl-2 pr-2">
       <SearchButton
         v-model="search"
         @open-sheet="showOptions = true"
         @update:model-value="(search) => updateSearchParams('search', search, true)">
         Buscar
       </SearchButton>
+      <Button variant="default">
+        Nuevo
+        <IconAsync name="PlusCircleIcon" class="!w-6 !h-6" />
+      </Button>
     </header>
 
     <main class="flex-1 overflow-auto">
@@ -122,7 +126,9 @@ const updateSearchParams = async(key: string, value: string | undefined, resetPa
           :is-open="showOptions"
           :sorting-options="sortingOptions"
           v-model:sort="sort"
+          v-model:direction="direction"
           @close-click="showOptions = !showOptions"
+          @direction-click="direction = (direction === 'asc' ? 'desc' : 'asc'); updateSearchParams('direction', direction, false)"
           @sort-click="(newSortValue) => { sort = newSortValue; updateSearchParams('sort', sort, false) }" />
       </div>
     </main>

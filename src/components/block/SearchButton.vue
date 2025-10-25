@@ -4,7 +4,7 @@ import { refDebounced } from '@vueuse/core';
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { Input } from '@/components/ui/input';
-import { PanelLeftCloseIcon } from 'lucide-vue-next';
+import IconAsync from '@/components/block/IconAsync.vue';
 
 const modelValue = defineModel<string>('modelValue');
 const emit = defineEmits(['open-sheet']);
@@ -26,7 +26,7 @@ watch(inputValueDebounced, (newValue) => {
       variant="outline"
       aria-label="Search"
       @click="emit('open-sheet')">
-      <PanelLeftCloseIcon />
+      <IconAsync name="AdjustmentsHorizontalIcon" class="!w-5 !h-5" />
     </Button>
   </ButtonGroup>
 </template>
