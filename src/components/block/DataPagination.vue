@@ -33,7 +33,7 @@ if (newPage !== _currentPage.value) { _currentPage.value = newPage; }
 </script>
 
 <template>
-  <div class="flex justify-between items-center px-5 md:px-2 py-1">
+  <div class="flex w-full justify-between items-center px-8 md:px-4">
     <span class="flex text-nowrap text-xs text-neutral-500">{{ firstRecordInPage }} - {{ lastRecordInPage }} de {{ props.rowsCount }}</span>
     <Pagination
       v-slot="{ page }"

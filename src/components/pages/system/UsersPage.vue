@@ -8,6 +8,7 @@ import Button from '@/components/ui/button/Button.vue';
 import SearchButton from '@/components/block/SearchButton.vue';
 import DataPagination from '@/components/block/DataPagination.vue';
 import DataTable from '@/components/block/DataTable.vue';
+import DataTableFilterSelectBoolean from '@/components/block/DataTableFilterSelectBoolean.vue';
 import DataTableFilterDrawer from '@/components/block/DataTableFilterDrawer.vue';
 
 const props = defineProps<{
@@ -102,22 +103,32 @@ const updateSearchParams = async(key: string, value: string | undefined, resetPa
 </script>
 
 <template>
-  <div class="flex flex-col min-h-[calc(100dvh-64px)]">
-    <header class="my-header-footer relative flex h-12 w-full overflow-auto items-center justify-between pl-2 pr-2">
-      <SearchButton
-        v-model="search"
-        @open-sheet="showOptions = true"
-        @update:model-value="(search) => updateSearchParams('search', search, true)">
-        Buscar
-      </SearchButton>
-      <Button variant="default">
-        Nuevo
-        <IconAsync name="PlusCircleIcon" class="!w-6 !h-6" />
-      </Button>
+  <div class="h-[calc(100dvh-64px)] grid grid-rows-[50px_1fr_50px]">
+    <header class="flex px-2 items-center justify-between border-b">
+      <!-- Left section -->
+      <div class="flex gap-x-2 items-center">
+        <SearchButton
+          v-model="search"
+          @open-sheet="showOptions = true"
+          @update:model-value="(search) => updateSearchParams('search', search, true)">
+          Buscar
+        </SearchButton>
+        <div class="hidden md:flex gap-x-2">
+          <DataTableFilterSelectBoolean  />
+          <DataTableFilterSelectBoolean field-name="Sexo" active-label="Hombre" inactive-label="Mujer" />
+        </div>
+      </div>
+      <!-- Right section -->
+      <div>
+        <Button variant="default">
+          Nuevo
+          <IconAsync name="PlusCircleIcon" class="!w-6 !h-6" />
+        </Button>
+      </div>
     </header>
 
-    <main class="flex-1 overflow-auto">
-      <div class="h-[calc(100dvh-156px)] max-w-full overflow-auto">
+    <main class="overflow-auto">
+      <div>
         <DataTable
           :loading="loading"
           :columns="columns"
@@ -133,7 +144,7 @@ const updateSearchParams = async(key: string, value: string | undefined, resetPa
       </div>
     </main>
 
-    <footer class="my-header-footer border-t absolute bottom-0 ">
+    <footer class="flex items-center justify-between border-t">
       <DataPagination
         :initialPage="currentPage"
         :rowsPerPage="rowsPerPage"
@@ -148,10 +159,3 @@ const updateSearchParams = async(key: string, value: string | undefined, resetPa
     </footer>
   </div>
 </template>
-
-<style scoped>
-.my-header-footer {
-  width: -webkit-fill-available;
-  width: -moz-available;
-}
-</style>

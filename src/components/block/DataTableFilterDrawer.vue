@@ -60,7 +60,9 @@ const direction = defineModel<'asc'|'desc'>('direction', { default: 'asc' });
                 Lista ordenada {{ direction === 'asc' ? 'ascendentemente' : 'descendentemente' }}
               </p>
             </div>
-            <Switch :model-value="direction === 'desc'" @click="emit('direction-click')" />
+            <Switch
+              :model-value="direction === 'desc'"
+              @click="emit('direction-click')" />
           </div>
         </div>
         <div class="rounded-md border m-4">
@@ -77,7 +79,9 @@ const direction = defineModel<'asc'|'desc'>('direction', { default: 'asc' });
                   {{ sortingOption.description }}
                 </p>
               </div>
-              <Switch :model-value="sort === sortingOption.value" @click="emit('sort-click', sortingOption.value)" />
+              <Switch
+                :model-value="sort === sortingOption.value"
+                @click="sort !== sortingOption.value ? emit('sort-click', sortingOption.value) : null" />
             </div>
             <hr v-if="index != (props.sortingOptions.length -1)" />
           </div>
