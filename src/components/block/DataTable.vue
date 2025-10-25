@@ -14,10 +14,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import DataTableSkeleton from '@/components/block/DataTableSkeleton.vue';
 
 const props = defineProps<{
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  loading?: boolean
 }>();
 
 const table = useVueTable({
@@ -29,8 +31,8 @@ const table = useVueTable({
 
 <template>
   <div class="z-0">
-    <!-- class="border rounded-md" -->
-    <Table>
+    <DataTableSkeleton  v-if="loading" :columns="props.columns.length" />
+    <Table v-if="!loading">
       <TableHeader>
         <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
           <TableHead v-for="header in headerGroup.headers" :key="header.id">

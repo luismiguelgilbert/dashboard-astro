@@ -5,21 +5,8 @@ import { CirclePlusIcon } from 'lucide-vue-next';
 import Button from '@/components/ui/button/Button.vue';
 import SearchButton from '@/components/block/SearchButton.vue';
 import DataPagination from '@/components/block/DataPagination.vue';
-import Label from '@/components/ui/label/Label.vue';
-import RadioGroup from '@/components/ui/radio-group/RadioGroup.vue';
-import RadioGroupItem from '@/components/ui/radio-group/RadioGroupItem.vue';
 import DataTable from '@/components/block/DataTable.vue';
-
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
+import DataTableFilterDrawer from '@/components/block/DataTableFilterDrawer.vue';
 
 import type { ColumnDef } from '@tanstack/vue-table';
 
@@ -60,15 +47,38 @@ const columns: ColumnDef<unknown>[] = [
     header: 'Activo',
   },
 ];
+const sortingOptions: { label: string; description: string; value: string; icon: string }[] = [
+  {
+    label: 'Nombres',
+    description: 'Ordenar lista por "Nombres" de usuario',
+    value: 'user_name, id',
+    icon: 'Bell',
+  },
+  {
+    label: 'Apellidos',
+    description: 'Ordenar lista por "Apellidos" de usuario',
+    value: 'user_lastname, id',
+    icon: 'CircleUser',
+  },
+  {
+    label: 'Email',
+    description: 'Ordenar lista por "Email" de usuario',
+    value: 'email, id',
+    icon: 'SquareUser',
+  },
+];
 
+const loading = ref<boolean>(false);
 const rows = ref(props.data.rows || []);
 const rowsCount = ref<number>(Number(props.data.count) || 0);
 const rowsPerPage = ref<number>(props.data.rowsPerPage || 0);
 const currentPage = ref<number>(props.data.currentPage || 0);
 const search = ref<string>(props.filters.search ?? '');
+const sort = ref<string>(props.filters.sort ?? '');
 const showOptions = ref<boolean>(false);
 
 const updateSearchParams = async(key: string, value: string | undefined, resetPage: boolean) => {
+  loading.value = true;
   console.log('updateSearchParams');
   console.log(`key: ${key}, value: ${value}, resetPage: ${resetPage}`);
   const params = new URLSearchParams(document.location.search);
@@ -81,7 +91,7 @@ const updateSearchParams = async(key: string, value: string | undefined, resetPa
   const url = `/api/system/users?${query}`;
   fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
   .then(res => res.json())
-  .then(response => { rows.value = response.rows; rowsCount.value = response.count; })
+  .then(response => { rows.value = response.rows; rowsCount.value = response.count; loading.value = false; })
   .catch(error => console.error('Error:', error));
   
   const currentURL = new URL(window.location.href);
@@ -105,44 +115,15 @@ const updateSearchParams = async(key: string, value: string | undefined, resetPa
     <main class="flex-1 overflow-auto">
       <div class="h-[calc(100dvh-156px)] max-w-full overflow-auto">
         <DataTable
+          :loading="loading"
           :columns="columns"
           :data="rows" />
-        <Sheet v-model:open="showOptions">
-          <SheetTrigger as-child />
-          <SheetContent side="right">
-            <SheetHeader>
-              <SheetTitle>Ordenar</SheetTitle>
-              <SheetDescription>
-                Make changes to your profile here. Click save when you're done.
-              </SheetDescription>
-            </SheetHeader>
-            <div class="grid gap-4 py-4">
-              <div class="grid items-center grid-cols-4 gap-4">
-                <RadioGroup default-value="option-one" @click="updateSearchParams('sort', 'user_name, id', false)">
-                  <div class="flex items-center space-x-2">
-                    <RadioGroupItem id="option-one" value="user_name, id" />
-                    <Label for="option-one">Nombres</Label>
-                  </div>
-                  <div class="flex items-center space-x-2" @click="updateSearchParams('sort', 'user_lastname, id', false)">
-                    <RadioGroupItem id="option-two" value="user_lastname, id" />
-                    <Label for="option-two">Apellidos</Label>
-                  </div>
-                  <div class="flex items-center space-x-2" @click="updateSearchParams('sort', 'email, id', false)">
-                    <RadioGroupItem id="option-three" value="email, id" />
-                    <Label for="option-three">Email</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-            </div>
-            <SheetFooter>
-              <SheetClose as-child>
-                <Button type="submit">
-                  Save changes
-                </Button>
-              </SheetClose>
-            </SheetFooter>
-          </SheetContent>
-        </Sheet>
+        <DataTableFilterDrawer
+          :is-open="showOptions"
+          :sorting-options="sortingOptions"
+          v-model:sort="sort"
+          @close-click="showOptions = !showOptions"
+          @sort-click="(newSortValue) => { sort = newSortValue; updateSearchParams('sort', sort, false) }" />
       </div>
     </main>
 
