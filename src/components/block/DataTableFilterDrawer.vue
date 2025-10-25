@@ -57,7 +57,7 @@ const direction = defineModel<'asc'|'desc'>('direction', { default: 'asc' });
                 Orden
               </p>
               <p class="text-xs text-muted-foreground">
-                Lista ordenada {{ direction === 'asc' ? 'ascendentemente' : 'descendentement' }}
+                Lista ordenada {{ direction === 'asc' ? 'ascendentemente' : 'descendentemente' }}
               </p>
             </div>
             <Switch :model-value="direction === 'desc'" @click="emit('direction-click')" />

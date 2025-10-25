@@ -21,6 +21,7 @@ watch(inputValueDebounced, (newValue) => {
   <ButtonGroup>
     <Input
       v-model="inputValue"
+      class="max-w-[100px] md:max-w-[300px]"
       placeholder="Buscar..." />
     <Button
       variant="outline"
