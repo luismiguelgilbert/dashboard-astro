@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { ColumnDef } from '@tanstack/vue-table';
+import type { HeroIconName } from '@/types/Utils';
 import type { Params, DataResponse } from '@/types/Users';
 import { ref } from 'vue';
 import { CirclePlusIcon } from 'lucide-vue-next';
@@ -7,8 +9,6 @@ import SearchButton from '@/components/block/SearchButton.vue';
 import DataPagination from '@/components/block/DataPagination.vue';
 import DataTable from '@/components/block/DataTable.vue';
 import DataTableFilterDrawer from '@/components/block/DataTableFilterDrawer.vue';
-
-import type { ColumnDef } from '@tanstack/vue-table';
 
 const props = defineProps<{
   filters: Params,
@@ -47,24 +47,24 @@ const columns: ColumnDef<unknown>[] = [
     header: 'Activo',
   },
 ];
-const sortingOptions: { label: string; description: string; value: string; icon: string }[] = [
+const sortingOptions: { label: string; description: string; value: string; icon: HeroIconName }[] = [
   {
     label: 'Nombres',
     description: 'Ordenar lista por "Nombres" de usuario',
     value: 'user_name, id',
-    icon: 'Bell',
+    icon: 'UserIcon',
   },
   {
     label: 'Apellidos',
     description: 'Ordenar lista por "Apellidos" de usuario',
     value: 'user_lastname, id',
-    icon: 'CircleUser',
+    icon: 'UserCircleIcon',
   },
   {
     label: 'Email',
     description: 'Ordenar lista por "Email" de usuario',
     value: 'email, id',
-    icon: 'SquareUser',
+    icon: 'EnvelopeIcon',
   },
 ];
 
