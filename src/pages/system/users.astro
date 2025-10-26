@@ -11,8 +11,6 @@ const urlSearchParams = Astro.url.searchParams;
 const params = convertURLSearchParamsToObject(urlSearchParams);
 const safeParsedResult = ParamsSchema.safeParse(params);
 const filters = safeParsedResult.success ? safeParsedResult.data : DefaultParamsSchema.parse({});
-console.log('filters');
-console.log(filters);
 if (safeParsedResult.error) {
   Object.entries(filters).forEach(([key, value]) => value && urlSearchParams.set(key, value.toString()));
   return Astro.redirect(Astro.url.href);
