@@ -109,7 +109,7 @@ const updateSearchParams = async(key: keyof z.infer<typeof ParamsSchema>, value:
 
 <template>
   <div class="h-[calc(100dvh-64px)] grid grid-rows-[50px_1fr_50px]">
-    <header class="flex px-2 items-center justify-between border-b">
+    <header class="flex max-w-screen px-2 items-center justify-between border-b">
       <!-- Left section -->
       <div class="flex gap-x-2 items-center">
         <SearchButton
@@ -159,7 +159,7 @@ const updateSearchParams = async(key: keyof z.infer<typeof ParamsSchema>, value:
       </div>
     </main>
 
-    <footer class="flex items-center justify-between border-t">
+    <footer class="flex max-w-screen items-center justify-between border-t">
       <DataPagination
         :initialPage="currentPage"
         :rowsPerPage="rowsPerPage"

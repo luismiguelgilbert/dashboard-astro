@@ -36,11 +36,38 @@ if (newPage !== _currentPage.value) { _currentPage.value = newPage; }
   <div class="flex w-full justify-between items-center px-8 md:px-4">
     <span class="flex text-nowrap text-xs text-neutral-500">{{ firstRecordInPage }} - {{ lastRecordInPage }} de {{ props.rowsCount }}</span>
     <Pagination
+      class="hidden md:flex"
       v-slot="{ page }"
       v-model:page="_currentPage"
       :items-per-page="props.rowsPerPage"
       :total="props.rowsCount"
       :sibling-count="1">
+      {{ updatePage(page) }}
+      <PaginationContent v-slot="{ items }">
+        <PaginationFirst />
+        <PaginationPrevious />
+  
+        <template v-for="(item, index) in items" :key="index">
+          <PaginationItem
+            v-if="item.type === 'page'"
+            :value="item.value"
+            :is-active="item.value === page"
+            class="cursor-pointer">
+            {{ item.value }}
+          </PaginationItem>
+        </template>
+  
+        <PaginationNext />
+        <PaginationLast />
+      </PaginationContent>
+    </Pagination>
+    <Pagination
+      class="flex md:hidden"
+      v-slot="{ page }"
+      v-model:page="_currentPage"
+      :items-per-page="props.rowsPerPage"
+      :total="props.rowsCount"
+      :sibling-count="0">
       {{ updatePage(page) }}
       <PaginationContent v-slot="{ items }">
         <PaginationFirst />
