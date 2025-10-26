@@ -1,13 +1,22 @@
 import type { APIRoute } from 'astro';
 import db from '@/lib/db';
+import { convertURLSearchParamsToObject } from '@/types/Utils';
+import { ParamsSchema, DefaultParamsSchema } from '@/types/Users';
 
 export const GET: APIRoute = async ({ url }) => {
   // console.log({params});
   // console.log({request});
-  const page = Number(url.searchParams.get('page') ?? 1);
-  const sort = String(url.searchParams.get('sort') ?? 1);
-  const direction = String(url.searchParams.get('direction') ?? 1);
-  const search = url.searchParams.get('search');
+  // console.log(url.searchParams);
+  const urlSearchParams = url.searchParams;
+  const params = convertURLSearchParamsToObject(urlSearchParams);
+  const safeParsedResult = ParamsSchema.safeParse(params);
+  const filters = safeParsedResult.success ? safeParsedResult.data : DefaultParamsSchema.parse({});
+  const page = filters.page;
+  const sort = filters.sort;
+  const direction = filters.direction;
+  const is_active = filters.is_active;
+  const user_sex = filters.user_sex;
+  const search = filters.search;
   const limit = 50;
   const offset = (page - 1) * limit;
 
@@ -15,12 +24,15 @@ export const GET: APIRoute = async ({ url }) => {
   const resultset = await db.query(`select 
       user_name,
       user_lastname,
+      user_sex,
       email,
       is_active,
       count(*) over() as full_count
     from sys_users
-    where is_active = True
+    where 1 = 1 
     ${search ? `and user_name ilike '%${search}%'` : ''}
+    ${is_active ? `and is_active in (${is_active})` : ''}
+    ${user_sex ? `and user_sex in (${user_sex})` : ''}
     order by ${sort} ${direction}
     limit ${limit}
     offset ${offset}`);

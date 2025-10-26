@@ -16,21 +16,25 @@ interface DataTableFilterSelectBooleanProps {
   fieldName?: string;
   activeLabel?: string;
   inactiveLabel?: string;
+  initialValues?: boolean[];
 }
 const props = withDefaults(defineProps<DataTableFilterSelectBooleanProps>(), {
   fieldName: 'Estado',
   activeLabel: 'Activo',
   inactiveLabel: 'Inactivo',
 });
+const emit = defineEmits<{(e: 'selected-values-change', selectedValues: boolean[]): void}>();
 
-const selectedValues = ref<boolean[]>([]);
+const selectedValues = ref<boolean[]>(props.initialValues || []);
 const toggleActive = () => {
   if(selectedValues.value.includes(true)) selectedValues.value = selectedValues.value.filter(x => x !== true);
   else selectedValues.value.push(true);
+  emit('selected-values-change', selectedValues.value);
 };
 const toggleInactive = () => {
   if(selectedValues.value.includes(false)) selectedValues.value = selectedValues.value.filter(x => x !== false);
   else selectedValues.value.push(false);
+  emit('selected-values-change', selectedValues.value);
 };
 </script>
 

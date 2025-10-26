@@ -2,7 +2,9 @@
 import type { ColumnDef } from '@tanstack/vue-table';
 import type { HeroIconName } from '@/types/Utils';
 import type { Params, DataResponse } from '@/types/Users';
+import z from 'zod/v4';
 import { ref } from 'vue';
+import { ParamsSchema } from '@/types/Users';
 import IconAsync from '@/components/block/IconAsync.vue';
 import Button from '@/components/ui/button/Button.vue';
 import SearchButton from '@/components/block/SearchButton.vue';
@@ -47,6 +49,10 @@ const columns: ColumnDef<unknown>[] = [
     accessorKey: 'is_active',
     header: 'Activo',
   },
+  {
+    accessorKey: 'user_sex',
+    header: 'Sexo',
+  },
 ];
 const sortingOptions: { label: string; description: string; value: string; icon: HeroIconName }[] = [
   {
@@ -75,21 +81,20 @@ const rowsCount = ref<number>(Number(props.data.count) || 0);
 const rowsPerPage = ref<number>(props.data.rowsPerPage || 0);
 const currentPage = ref<number>(props.data.currentPage || 0);
 const search = ref<string>(props.filters.search ?? '');
+const is_active = ref<boolean[]>(props.filters.is_active || []);
+const user_sex = ref<boolean[]>(props.filters.user_sex || []);
 const sort = ref<string>(props.filters.sort ?? '');
 const direction = ref<'asc'|'desc'>(props.filters.direction ?? 'asc');
 const showOptions = ref<boolean>(false);
 
-const updateSearchParams = async(key: string, value: string | undefined, resetPage: boolean) => {
+const updateSearchParams = async(key: keyof z.infer<typeof ParamsSchema>, value: string | undefined, resetPage: boolean) => {
   loading.value = true;
-  console.log('updateSearchParams');
-  console.log(`key: ${key}, value: ${value}, resetPage: ${resetPage}`);
   const params = new URLSearchParams(document.location.search);
   if (value) { params.set(key, value); }
   else { params.delete(key); }
   if (resetPage) { params.set('page', '1'); currentPage.value = 1; }
 
   const query = new URLSearchParams(params).toString();
-  console.log({ query });
   const url = `/api/system/users?${query}`;
   fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
   .then(res => res.json())
@@ -114,8 +119,18 @@ const updateSearchParams = async(key: string, value: string | undefined, resetPa
           Buscar
         </SearchButton>
         <div class="hidden md:flex gap-x-2">
-          <DataTableFilterSelectBoolean  />
-          <DataTableFilterSelectBoolean field-name="Sexo" active-label="Hombre" inactive-label="Mujer" />
+          <DataTableFilterSelectBoolean
+            field-name="Estado"
+            active-label="Activo"
+            inactive-label="Inactivo"
+            :initial-values="is_active"
+            @selected-values-change="(data) => { is_active = data; updateSearchParams('is_active', data.join(','), true) }" />
+          <DataTableFilterSelectBoolean
+            field-name="Sexo"
+            active-label="Hombre"
+            inactive-label="Mujer"
+            :initial-values="user_sex"
+            @selected-values-change="(data) => { user_sex = data; updateSearchParams('user_sex', data.join(','), true) }" />
         </div>
       </div>
       <!-- Right section -->

@@ -1,16 +1,20 @@
 ---
 import type { DataResponse } from '@/types/Users';
-import { ParamsSchema, DefaultParamsSchema } from '@/types/Users'
+import { ParamsSchema, DefaultParamsSchema } from '@/types/Users';
+import { convertURLSearchParamsToObject } from '@/types/Utils';
 import MainLayout from '@/layouts/MainLayout.astro';
 import UsersPage from '@/components/pages/system/UsersPage.vue';
 
 const hasAccess = Astro.locals.permissions?.includes('010100'); if (!hasAccess) { return Astro.redirect("/") }
 
-const params = Astro.url.searchParams;
-const isURLSearchParamsValid = ParamsSchema.safeParse(Object.fromEntries(params.entries())).success;
-const filters = isURLSearchParamsValid ? ParamsSchema.parse(Object.fromEntries(params.entries())) : DefaultParamsSchema.parse({});
-if (!isURLSearchParamsValid) {
-  Object.entries(filters).forEach(([key, value]) => value && params.set(key, value.toString()));
+const urlSearchParams = Astro.url.searchParams;
+const params = convertURLSearchParamsToObject(urlSearchParams);
+const safeParsedResult = ParamsSchema.safeParse(params);
+const filters = safeParsedResult.success ? safeParsedResult.data : DefaultParamsSchema.parse({});
+console.log('filters');
+console.log(filters);
+if (safeParsedResult.error) {
+  Object.entries(filters).forEach(([key, value]) => value && urlSearchParams.set(key, value.toString()));
   return Astro.redirect(Astro.url.href);
 }
 

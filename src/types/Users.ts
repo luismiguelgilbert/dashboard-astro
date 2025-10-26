@@ -5,7 +5,15 @@ export const ParamsSchema = z.object({
   direction: z.literal(['asc', 'desc']),
   page: z.coerce.number(),
   search: z.string().optional().nullable(),
-});
+  is_active: z.string()
+    .transform((value) => value.split(','))
+		.pipe(z.stringbool().array())
+    .optional(),
+  user_sex: z.string()
+    .transform((value) => value.split(','))
+		.pipe(z.stringbool().array())
+    .optional(),
+}); 
 export type Params = z.infer<typeof ParamsSchema>;
 
 export const DefaultParamsSchema = ParamsSchema.extend({
@@ -19,6 +27,7 @@ export const UserRowSchema = z.object({
   is_active: z.boolean(),
   user_lastname: z.string(),
   user_name: z.string(),
+  user_sex: z.boolean(),
 });
 export type UserRow = z.infer<typeof UserRowSchema>;
 
