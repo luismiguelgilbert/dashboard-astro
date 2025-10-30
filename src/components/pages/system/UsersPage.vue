@@ -10,8 +10,8 @@ import Button from '@/components/ui/button/Button.vue';
 import SearchButton from '@/components/block/SearchButton.vue';
 import DataPagination from '@/components/block/DataPagination.vue';
 import DataTable from '@/components/block/DataTable.vue';
+import DataTableSortButton from '@/components/block/DataTableSortButton.vue';
 import DataTableFilterSelectBoolean from '@/components/block/DataTableFilterSelectBoolean.vue';
-import DataTableFilterDrawer from '@/components/block/DataTableFilterDrawer.vue';
 
 const props = defineProps<{
   filters: Params,
@@ -114,10 +114,15 @@ const updateSearchParams = async(key: keyof z.infer<typeof ParamsSchema>, value:
       <div class="flex gap-x-2 items-center">
         <SearchButton
           v-model="search"
-          @open-sheet="showOptions = true"
           @update:model-value="(search) => updateSearchParams('search', search, true)">
           Buscar
         </SearchButton>
+        <DataTableSortButton
+          :sorting-options="sortingOptions"
+          v-model:sort="sort"
+          v-model:direction="direction"
+          @direction-change="(data) => { direction = data; updateSearchParams('direction', data, false) }"
+          @sort-click="(newSortValue) => { sort = newSortValue; updateSearchParams('sort', sort, false) }" />
         <div class="hidden md:flex gap-x-2">
           <DataTableFilterSelectBoolean
             field-name="Estado"
@@ -148,14 +153,6 @@ const updateSearchParams = async(key: keyof z.infer<typeof ParamsSchema>, value:
           :loading="loading"
           :columns="columns"
           :data="rows" />
-        <DataTableFilterDrawer
-          :is-open="showOptions"
-          :sorting-options="sortingOptions"
-          v-model:sort="sort"
-          v-model:direction="direction"
-          @close-click="showOptions = !showOptions"
-          @direction-click="direction = (direction === 'asc' ? 'desc' : 'asc'); updateSearchParams('direction', direction, false)"
-          @sort-click="(newSortValue) => { sort = newSortValue; updateSearchParams('sort', sort, false) }" />
       </div>
     </main>
 

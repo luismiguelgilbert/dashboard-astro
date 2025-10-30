@@ -86,9 +86,6 @@ const direction = defineModel<'asc'|'desc'>('direction', { default: 'asc' });
             <hr v-if="index != (props.sortingOptions.length -1)" />
           </div>
         </div>
-        <!-- Filtering Secion-->
-         <hr />
-         Coming soon!
       </div>
       <!-- <SheetFooter class="border-t">
         <SheetClose as-child>

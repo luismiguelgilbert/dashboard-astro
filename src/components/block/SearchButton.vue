@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import IconAsync from '@/components/block/IconAsync.vue';
 
 const modelValue = defineModel<string>('modelValue');
-const emit = defineEmits(['open-sheet']);
 
 const inputValue = ref(modelValue.value);
 const inputValueDebounced = refDebounced(inputValue, 500);
@@ -26,8 +25,8 @@ watch(inputValueDebounced, (newValue) => {
     <Button
       variant="outline"
       aria-label="Search"
-      @click="emit('open-sheet')">
-      <IconAsync name="AdjustmentsHorizontalIcon" class="!w-5 !h-5" />
+      @click="() => { inputValue = '' }">
+      <IconAsync name="BackspaceIcon" class="!w-5 !h-5" />
     </Button>
   </ButtonGroup>
 </template>

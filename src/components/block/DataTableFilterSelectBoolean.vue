@@ -43,7 +43,7 @@ const toggleInactive = () => {
     <DropdownMenuTrigger as-child>
       <ButtonGroup>
         <Button variant="dashed" size="sm">
-          <IconAsync name="PlusCircleIcon" class="!w-6 !h-6" />
+          <IconAsync name="FunnelIcon" class="!w-6 !h-6" />
           {{ props.fieldName }}
           <ButtonGroupSeparator v-if="selectedValues.length" class="!m-2" />
           <Badge v-if="selectedValues.length" variant="secondary">
