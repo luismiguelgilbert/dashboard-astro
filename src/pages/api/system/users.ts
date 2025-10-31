@@ -21,15 +21,15 @@ export const GET: APIRoute = async ({ url }) => {
   const offset = (page - 1) * limit;
 
   console.time('[perfCheck - dbQuery] > /api/system/users');
-  const resultset = await db.query(`select 
-      user_name,
-      user_lastname,
+  const resultset = await db.query(`select
+      INITCAP(user_name) as user_name,
+      INITCAP(user_lastname) as user_lastname,
       user_sex,
       email,
       is_active,
       count(*) over() as full_count
     from sys_users
-    where 1 = 1 
+    where 1 = 1
     ${search ? `and user_name ilike '%${search}%'` : ''}
     ${is_active ? `and is_active in (${is_active})` : ''}
     ${user_sex ? `and user_sex in (${user_sex})` : ''}

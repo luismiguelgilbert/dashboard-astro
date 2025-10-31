@@ -50,7 +50,9 @@ const table = useVueTable({
               v-for="row in table.getRowModel().rows" :key="row.id"
               :data-state="row.getIsSelected() ? 'selected' : undefined">
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-                <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+                <slot :name="`cell-${cell.column.id}`" v-bind="cell.getContext().row.original as any">
+                  <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
+                </slot>
               </TableCell>
             </TableRow>
           </template>

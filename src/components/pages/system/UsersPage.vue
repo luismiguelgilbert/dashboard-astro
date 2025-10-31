@@ -2,11 +2,13 @@
 import type { ColumnDef } from '@tanstack/vue-table';
 import type { HeroIconName } from '@/types/Utils';
 import type { Params, DataResponse } from '@/types/Users';
+import type { UserRow } from '@/types/Users';
 import z from 'zod/v4';
 import { ref } from 'vue';
 import { ParamsSchema } from '@/types/Users';
 import IconAsync from '@/components/block/IconAsync.vue';
 import Button from '@/components/ui/button/Button.vue';
+import Badge from '@/components/ui/badge/Badge.vue';
 import SearchButton from '@/components/block/SearchButton.vue';
 import DataPagination from '@/components/block/DataPagination.vue';
 import DataTable from '@/components/block/DataTable.vue';
@@ -14,47 +16,53 @@ import DataTableSortButton from '@/components/block/DataTableSortButton.vue';
 import DataTableFilterSelectBoolean from '@/components/block/DataTableFilterSelectBoolean.vue';
 
 const props = defineProps<{
-  filters: Params,
-  data: DataResponse,
+  filters: Params;
+  data: DataResponse;
 }>();
 
 const columns: ColumnDef<unknown>[] = [
   {
     accessorKey: 'user_name',
+    id: 'user_name',
     header: 'Nombres',
     // header: () => h('div', { class: 'text-right' }, 'Amount'),
     // cell: ({ row }) => {
-      // const amount = Number.parseFloat(row.getValue('amount'))
-      // const formatted = new Intl.NumberFormat('en-US', {
-      //   style: 'currency',
-      //   currency: 'USD',
-      // }).format(amount)
+    // const amount = Number.parseFloat(row.getValue('amount'))
+    // const formatted = new Intl.NumberFormat('en-US', {
+    //   style: 'currency',
+    //   currency: 'USD',
+    // }).format(amount)
 
-      // return h('div', { class: 'text-right font-medium' }, formatted)
+    // return h('div', { class: 'text-right font-medium' }, formatted)
     // },
   },
   {
+    id: 'user_lastname',
     accessorKey: 'user_lastname',
     header: 'Apellidos',
   },
   {
+    id: 'email',
     accessorKey: 'email',
     header: 'Email',
   },
   {
-    accessorKey: 'email',
-    header: 'Email',
-  },
-  {
+    id: 'is_active',
     accessorKey: 'is_active',
     header: 'Activo',
   },
   {
+    id: 'user_sex',
     accessorKey: 'user_sex',
     header: 'Sexo',
   },
 ];
-const sortingOptions: { label: string; description: string; value: string; icon: HeroIconName }[] = [
+const sortingOptions: {
+  label: string;
+  description: string;
+  value: string;
+  icon: HeroIconName;
+}[] = [
   {
     label: 'Nombres',
     description: 'Ordenar lista por "Nombres" de usuario',
@@ -84,36 +92,55 @@ const search = ref<string>(props.filters.search ?? '');
 const is_active = ref<boolean[]>(props.filters.is_active || []);
 const user_sex = ref<boolean[]>(props.filters.user_sex || []);
 const sort = ref<string>(props.filters.sort ?? '');
-const direction = ref<'asc'|'desc'>(props.filters.direction ?? 'asc');
+const direction = ref<'asc' | 'desc'>(props.filters.direction ?? 'asc');
 
-const updateSearchParams = async(key: keyof z.infer<typeof ParamsSchema>, value: string | undefined, resetPage: boolean) => {
+const updateSearchParams = async (
+  key: keyof z.infer<typeof ParamsSchema>,
+  value: string | undefined,
+  resetPage: boolean,
+) => {
   loading.value = true;
   const params = new URLSearchParams(document.location.search);
-  if (value) { params.set(key, value); }
-  else { params.delete(key); }
-  if (resetPage) { params.set('page', '1'); currentPage.value = 1; }
+  if (value) {
+    params.set(key, value);
+  } else {
+    params.delete(key);
+  }
+  if (resetPage) {
+    params.set('page', '1');
+    currentPage.value = 1;
+  }
 
   const query = new URLSearchParams(params).toString();
   const url = `/api/system/users?${query}`;
   fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
-  .then(res => res.json())
-  .then(response => { rows.value = response.rows; rowsCount.value = response.count; loading.value = false; })
-  .catch(error => console.error('Error:', error));
-  
+    .then((res) => res.json())
+    .then((response) => {
+      rows.value = response.rows;
+      rowsCount.value = response.count;
+      loading.value = false;
+    })
+    .catch((error) => console.error('Error:', error));
+
   const currentURL = new URL(window.location.href);
-  const newUrlPath = currentURL.pathname + '?' + params.toString() + currentURL.hash;
+  const newUrlPath =
+    currentURL.pathname + '?' + params.toString() + currentURL.hash;
   history.replaceState(null, '', newUrlPath);
 };
 </script>
 
 <template>
   <div class="h-[calc(100dvh-64px)] grid grid-rows-[50px_1fr_50px]">
-    <header class="flex max-w-screen px-2 items-center justify-between border-b">
+    <header
+      class="flex max-w-screen px-2 items-center justify-between border-b"
+    >
       <!-- Left section -->
       <div class="flex gap-x-2 items-center">
         <SearchButton
           v-model="search"
-          @update:model-value="(search) => updateSearchParams('search', search, true)">
+          @update:model-value="
+            (search) => updateSearchParams('search', search, true)
+          ">
           Buscar
         </SearchButton>
         <div class="hidden md:flex gap-x-2">
@@ -121,20 +148,43 @@ const updateSearchParams = async(key: keyof z.infer<typeof ParamsSchema>, value:
             :sorting-options="sortingOptions"
             v-model:sort="sort"
             v-model:direction="direction"
-            @direction-change="(data) => { direction = data; updateSearchParams('direction', data, false) }"
-            @sort-click="(newSortValue) => { sort = newSortValue; updateSearchParams('sort', sort, false) }" />
+            @direction-change="
+              (data) => {
+                direction = data;
+                updateSearchParams('direction', data, false);
+              }
+            "
+            @sort-click="
+              (newSortValue) => {
+                sort = newSortValue;
+                updateSearchParams('sort', sort, false);
+              }
+            "
+          />
           <DataTableFilterSelectBoolean
             field-name="Estado"
             active-label="Activo"
             inactive-label="Inactivo"
             :initial-values="is_active"
-            @selected-values-change="(data) => { is_active = data; updateSearchParams('is_active', data.join(','), true) }" />
+            @selected-values-change="
+              (data) => {
+                is_active = data;
+                updateSearchParams('is_active', data.join(','), true);
+              }
+            "
+          />
           <DataTableFilterSelectBoolean
             field-name="Sexo"
             active-label="Hombre"
             inactive-label="Mujer"
             :initial-values="user_sex"
-            @selected-values-change="(data) => { user_sex = data; updateSearchParams('user_sex', data.join(','), true) }" />
+            @selected-values-change="
+              (data) => {
+                user_sex = data;
+                updateSearchParams('user_sex', data.join(','), true);
+              }
+            "
+          />
         </div>
       </div>
       <!-- Right section -->
@@ -148,10 +198,17 @@ const updateSearchParams = async(key: keyof z.infer<typeof ParamsSchema>, value:
 
     <main class="overflow-auto">
       <div>
-        <DataTable
-          :loading="loading"
-          :columns="columns"
-          :data="rows" />
+        <DataTable :loading="loading" :columns="columns" :data="rows">
+          <template #cell-is_active="row: UserRow">
+            <Badge
+              :class="row.is_active ? 'bg-green-500' : 'bg-rose-400'"  >
+              {{ row.is_active ? 'Activo' : 'Inactivo' }}
+            </Badge>
+          </template>
+          <template #cell-user_sex="row: UserRow">
+            {{ row.is_active ? 'Hombre' : 'Mujer' }}
+          </template>
+        </DataTable>
       </div>
     </main>
 
@@ -161,12 +218,15 @@ const updateSearchParams = async(key: keyof z.infer<typeof ParamsSchema>, value:
         :rowsPerPage="rowsPerPage"
         :rowsCount="rowsCount"
         :currentPage="currentPage"
-        @update="(page) => {
-          if (currentPage !== page) {
-            currentPage = page;
-            updateSearchParams('page', page.toString(), false)
-          };
-        }" />
+        @update="
+          (page) => {
+            if (currentPage !== page) {
+              currentPage = page;
+              updateSearchParams('page', page.toString(), false);
+            }
+          }
+        "
+      />
     </footer>
   </div>
 </template>
