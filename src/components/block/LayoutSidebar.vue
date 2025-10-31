@@ -89,7 +89,7 @@ const routeTitle = computed(() => {
       </SidebarContent>
     </Sidebar>
     <SidebarInset class="overflow-hidden">
-      <header class="z-50 w-full padding-safe my-header flex h-16 shrink-0 fixed border-b border-t dark:border-b-neutral-800 bg-white dark:bg-zinc-900">
+      <header class="z-50 w-full padding-safe my-header flex h-16 shrink-0 fixed border-b border-t-0 md:border-t dark:border-b-neutral-800 bg-white dark:bg-zinc-900">
         <div class="flex w-full p-2 items-center justify-between">
           <div class="flex items-center gap-2">
             <SidebarTrigger ref="theSidebarTrigger" class="cursor-pointer" />

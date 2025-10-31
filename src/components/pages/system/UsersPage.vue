@@ -85,7 +85,6 @@ const is_active = ref<boolean[]>(props.filters.is_active || []);
 const user_sex = ref<boolean[]>(props.filters.user_sex || []);
 const sort = ref<string>(props.filters.sort ?? '');
 const direction = ref<'asc'|'desc'>(props.filters.direction ?? 'asc');
-const showOptions = ref<boolean>(false);
 
 const updateSearchParams = async(key: keyof z.infer<typeof ParamsSchema>, value: string | undefined, resetPage: boolean) => {
   loading.value = true;
@@ -117,13 +116,13 @@ const updateSearchParams = async(key: keyof z.infer<typeof ParamsSchema>, value:
           @update:model-value="(search) => updateSearchParams('search', search, true)">
           Buscar
         </SearchButton>
-        <DataTableSortButton
-          :sorting-options="sortingOptions"
-          v-model:sort="sort"
-          v-model:direction="direction"
-          @direction-change="(data) => { direction = data; updateSearchParams('direction', data, false) }"
-          @sort-click="(newSortValue) => { sort = newSortValue; updateSearchParams('sort', sort, false) }" />
         <div class="hidden md:flex gap-x-2">
+          <DataTableSortButton
+            :sorting-options="sortingOptions"
+            v-model:sort="sort"
+            v-model:direction="direction"
+            @direction-change="(data) => { direction = data; updateSearchParams('direction', data, false) }"
+            @sort-click="(newSortValue) => { sort = newSortValue; updateSearchParams('sort', sort, false) }" />
           <DataTableFilterSelectBoolean
             field-name="Estado"
             active-label="Activo"
