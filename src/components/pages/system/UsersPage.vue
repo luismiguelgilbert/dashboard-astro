@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import type { ColumnDef } from '@tanstack/vue-table';
-import type { HeroIconName } from '@/types/Utils';
-import type { Params, DataResponse } from '@/types/Users';
-import type { UserRow } from '@/types/Users';
-import z from 'zod/v4';
-import { ref } from 'vue';
-import { ParamsSchema } from '@/types/Users';
-import IconAsync from '@/components/block/IconAsync.vue';
-import Button from '@/components/ui/button/Button.vue';
-import Badge from '@/components/ui/badge/Badge.vue';
-import SearchButton from '@/components/block/SearchButton.vue';
-import DataPagination from '@/components/block/DataPagination.vue';
-import DataTable from '@/components/block/DataTable.vue';
-import DataTableSortButton from '@/components/block/DataTableSortButton.vue';
-import DataTableFilterSelectBoolean from '@/components/block/DataTableFilterSelectBoolean.vue';
+  import type { ColumnDef } from '@tanstack/vue-table';
+  import type { HeroIconName } from '@/types/Utils';
+  import type { Params, DataResponse } from '@/types/Users';
+  import type { UserRow } from '@/types/Users';
+  import z from 'zod/v4';
+  import { ref } from 'vue';
+  import { ParamsSchema } from '@/types/Users';
+  import IconAsync from '@/components/block/IconAsync.vue';
+  import Button from '@/components/ui/button/Button.vue';
+  import Badge from '@/components/ui/badge/Badge.vue';
+  import SearchButton from '@/components/block/SearchButton.vue';
+  import DataPagination from '@/components/block/DataPagination.vue';
+  import DataTable from '@/components/block/DataTable.vue';
+  import DataTableSortButton from '@/components/block/DataTableSortButton.vue';
+  import DataTableFilterSelectBoolean from '@/components/block/DataTableFilterSelectBoolean.vue';
 
 const props = defineProps<{
   filters: Params;
@@ -25,36 +25,31 @@ const columns: ColumnDef<unknown>[] = [
     accessorKey: 'user_name',
     id: 'user_name',
     header: 'Nombres',
-    // header: () => h('div', { class: 'text-right' }, 'Amount'),
-    // cell: ({ row }) => {
-    // const amount = Number.parseFloat(row.getValue('amount'))
-    // const formatted = new Intl.NumberFormat('en-US', {
-    //   style: 'currency',
-    //   currency: 'USD',
-    // }).format(amount)
-
-    // return h('div', { class: 'text-right font-medium' }, formatted)
-    // },
   },
   {
     id: 'user_lastname',
     accessorKey: 'user_lastname',
     header: 'Apellidos',
+    enableHiding: true,
+    meta: 'hidden md:table-cell',
   },
   {
     id: 'email',
     accessorKey: 'email',
     header: 'Email',
+    meta: 'hidden md:table-cell',
   },
   {
     id: 'is_active',
     accessorKey: 'is_active',
-    header: 'Activo',
+    header: 'Estado',
+    meta: 'hidden md:table-cell',
   },
   {
     id: 'user_sex',
     accessorKey: 'user_sex',
     header: 'Sexo',
+    meta: 'hidden md:table-cell',
   },
 ];
 const sortingOptions: {
@@ -94,11 +89,7 @@ const user_sex = ref<boolean[]>(props.filters.user_sex || []);
 const sort = ref<string>(props.filters.sort ?? '');
 const direction = ref<'asc' | 'desc'>(props.filters.direction ?? 'asc');
 
-const updateSearchParams = async (
-  key: keyof z.infer<typeof ParamsSchema>,
-  value: string | undefined,
-  resetPage: boolean,
-) => {
+const updateSearchParams = async (key: keyof z.infer<typeof ParamsSchema>, value: string | undefined, resetPage: boolean ) => {
   loading.value = true;
   const params = new URLSearchParams(document.location.search);
   if (value) {
@@ -132,15 +123,12 @@ const updateSearchParams = async (
 <template>
   <div class="h-[calc(100dvh-64px)] grid grid-rows-[50px_1fr_50px]">
     <header
-      class="flex max-w-screen px-2 items-center justify-between border-b"
-    >
+      class="flex max-w-screen px-2 items-center justify-between border-b">
       <!-- Left section -->
       <div class="flex gap-x-2 items-center">
         <SearchButton
           v-model="search"
-          @update:model-value="
-            (search) => updateSearchParams('search', search, true)
-          ">
+          @update:model-value="(search) => updateSearchParams('search', search, true)">
           Buscar
         </SearchButton>
         <div class="hidden md:flex gap-x-2">
@@ -148,42 +136,20 @@ const updateSearchParams = async (
             :sorting-options="sortingOptions"
             v-model:sort="sort"
             v-model:direction="direction"
-            @direction-change="
-              (data) => {
-                direction = data;
-                updateSearchParams('direction', data, false);
-              }
-            "
-            @sort-click="
-              (newSortValue) => {
-                sort = newSortValue;
-                updateSearchParams('sort', sort, false);
-              }
-            "
-          />
+            @direction-change="(data) => { direction = data; updateSearchParams('direction', data, false); }"
+            @sort-click="(newSortValue) => { sort = newSortValue; updateSearchParams('sort', sort, false); }" />
           <DataTableFilterSelectBoolean
             field-name="Estado"
             active-label="Activo"
             inactive-label="Inactivo"
             :initial-values="is_active"
-            @selected-values-change="
-              (data) => {
-                is_active = data;
-                updateSearchParams('is_active', data.join(','), true);
-              }
-            "
-          />
+            @selected-values-change="(data) => { is_active = data; updateSearchParams('is_active', data.join(','), true); }" />
           <DataTableFilterSelectBoolean
             field-name="Sexo"
             active-label="Hombre"
             inactive-label="Mujer"
             :initial-values="user_sex"
-            @selected-values-change="
-              (data) => {
-                user_sex = data;
-                updateSearchParams('user_sex', data.join(','), true);
-              }
-            "
+            @selected-values-change="(data) => { user_sex = data; updateSearchParams('user_sex', data.join(','), true); }"
           />
         </div>
       </div>
@@ -199,14 +165,50 @@ const updateSearchParams = async (
     <main class="overflow-auto">
       <div>
         <DataTable :loading="loading" :columns="columns" :data="rows">
+          <template #cell-user_name="row: UserRow">
+            <span>
+              <span class="hidden md:flex">{{ row.user_name }}</span>
+              <span class="flex md:hidden">{{ `${row.user_name} ${row.user_lastname}` }}</span>
+              <p class="flex items-center gap-x-1 md:hidden">
+                <IconAsync
+                  class="!w-4 !h-4"
+                  name="EnvelopeIcon"/>
+                {{ row.email }}
+              </p>
+              <p class="flex items-center gap-x-1 md:hidden">
+                <IconAsync
+                  class="!w-4 !h-4"
+                  :name="row.is_active ? 'CheckCircleIcon' : 'ExclamationCircleIcon'"
+                  :class="row.is_active ? 'text-green-500' : 'text-red-500'" />
+                {{ row.is_active ? 'Activo' : 'Inactivo' }}
+                <IconAsync
+                  class="!w-4 !h-4"
+                  name="UserIcon"
+                  :class="!row.user_sex ? 'text-rose-400' : undefined" />
+                {{ row.user_sex ? 'Hombre' : 'Mujer' }}
+              </p>
+            </span>
+          </template>
+          <template #cell-user_lastname="row: UserRow">
+            <span class="hidden md:flex">{{ row.user_lastname }}</span>
+          </template>
           <template #cell-is_active="row: UserRow">
-            <Badge
-              :class="row.is_active ? 'bg-green-500' : 'bg-rose-400'"  >
+            <span class="flex items-center gap-x-2">
+              <IconAsync
+                class="!w-5 !h-5"
+                :name="row.is_active ? 'CheckCircleIcon' : 'ExclamationCircleIcon'"
+                :class="row.is_active ? 'text-green-500' : 'text-red-500'" />
               {{ row.is_active ? 'Activo' : 'Inactivo' }}
-            </Badge>
+            </span>
           </template>
           <template #cell-user_sex="row: UserRow">
-            {{ row.is_active ? 'Hombre' : 'Mujer' }}
+            <span class="flex items-center gap-x-2">
+              <IconAsync
+                class="!w-5 !h-5"
+                name="UserIcon"
+                :class="!row.user_sex ? 'text-rose-400' : undefined" />
+                {{ row.user_sex ? 'Hombre' : 'Mujer' }}
+            </span>
           </template>
         </DataTable>
       </div>

@@ -46,7 +46,7 @@ const direction = defineModel<'asc'|'desc'>('direction', { default: 'asc' });
       <DropdownMenuLabel>Orden:</DropdownMenuLabel>
       <DropdownMenuGroup>
         <DropdownMenuItem
-          class="cursor-pointer"
+          class="cursor-pointer py-2"
           @click="emit('direction-change', direction === 'asc' ? 'desc' : 'asc')">
           <div class="flex items-center space-x-4 w-full">
             <div class="flex flex-1 items-center gap-x-2">
@@ -57,7 +57,6 @@ const direction = defineModel<'asc'|'desc'>('direction', { default: 'asc' });
             </div>
             <Switch :model-value="direction === 'asc'" />
           </div>
-          
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
@@ -69,7 +68,7 @@ const direction = defineModel<'asc'|'desc'>('direction', { default: 'asc' });
           v-for="(sortingOption) in props.sortingOptions"
           :key="sortingOption.value">
           <DropdownMenuItem
-            class="cursor-pointer"
+            class="cursor-pointer py-2 my-2 md:my-1"
             @click="sort !== sortingOption.value ? emit('sort-click', sortingOption.value) : null">
             <div class="flex items-center space-x-4 w-full">
               <div class="flex flex-1 items-center gap-x-2">
