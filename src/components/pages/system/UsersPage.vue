@@ -8,12 +8,26 @@
   import { ParamsSchema } from '@/types/Users';
   import IconAsync from '@/components/block/IconAsync.vue';
   import Button from '@/components/ui/button/Button.vue';
-  import Badge from '@/components/ui/badge/Badge.vue';
   import SearchButton from '@/components/block/SearchButton.vue';
   import DataPagination from '@/components/block/DataPagination.vue';
   import DataTable from '@/components/block/DataTable.vue';
   import DataTableSortButton from '@/components/block/DataTableSortButton.vue';
   import DataTableFilterSelectBoolean from '@/components/block/DataTableFilterSelectBoolean.vue';
+  import DropdownMenu from '@/components/ui/dropdown-menu/DropdownMenu.vue';
+  import DropdownMenuItem from '@/components/ui/dropdown-menu/DropdownMenuItem.vue';
+  import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuContent.vue';
+  import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigger.vue';
+  import DropdownMenuSeparator from '@/components/ui/dropdown-menu/DropdownMenuSeparator.vue';
+  import DropdownMenuLabel from '@/components/ui/dropdown-menu/DropdownMenuLabel.vue';
+  import DropdownMenuSub from '@/components/ui/dropdown-menu/DropdownMenuSub.vue';
+  import DropdownMenuSubTrigger from '@/components/ui/dropdown-menu/DropdownMenuSubTrigger.vue';
+  // import DropdownMenuPortal from '@/components/ui/dropdown-menu/m';
+  import DropdownMenuSubContent from '@/components/ui/dropdown-menu/DropdownMenuSubContent.vue';
+  import DropdownMenuRadioGroup from '@/components/ui/dropdown-menu/DropdownMenuRadioGroup.vue';
+  import DropdownMenuRadioItem from '@/components/ui/dropdown-menu/DropdownMenuRadioItem.vue';
+  import { DropdownMenuPortal } from '@/components/ui/dropdown-menu/index';
+  // <DropdownMenuPortal>
+  // <DropdownMenuSubContent>
 
 const props = defineProps<{
   filters: Params;
@@ -168,8 +182,8 @@ const updateSearchParams = async (key: keyof z.infer<typeof ParamsSchema>, value
           <template #cell-user_name="row: UserRow">
             <span>
               <span class="hidden md:flex">{{ row.user_name }}</span>
-              <span class="flex md:hidden">{{ `${row.user_name} ${row.user_lastname}` }}</span>
-              <p class="flex items-center gap-x-1 md:hidden">
+              <span class="flex md:hidden font-bold">{{ `${row.user_name} ${row.user_lastname}` }}</span>
+              <p class="flex items-center gap-x-1 md:hidden font-extralight text-xs">
                 <IconAsync
                   class="!w-4 !h-4"
                   name="EnvelopeIcon"/>
@@ -220,15 +234,70 @@ const updateSearchParams = async (key: keyof z.infer<typeof ParamsSchema>, value
         :rowsPerPage="rowsPerPage"
         :rowsCount="rowsCount"
         :currentPage="currentPage"
-        @update="
-          (page) => {
-            if (currentPage !== page) {
-              currentPage = page;
-              updateSearchParams('page', page.toString(), false);
-            }
+        @update="(page) => {
+          if (currentPage !== page) {
+            currentPage = page;
+            updateSearchParams('page', page.toString(), false);
           }
-        "
-      />
+        }" />
+      <div class="absolute right-0 mb-32 mr-2 flex md:hidden">
+        <DropdownMenu>
+          <DropdownMenuTrigger as-child>
+            <Button variant="secondary" class="rounded-2xl">
+              <IconAsync name="AdjustmentsHorizontalIcon" class="!w-6 !h-6" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent class="w-56" side="top" align="end" :align-offset="2"> 
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <IconAsync name="ChevronUpDownIcon" class="!w-6 !h-6" />
+                <span class="pl-2">Ordenar</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                DropdownMenuRadioGroup DropdownMenuRadioItem
+                <DropdownMenuSubContent>
+                  <DropdownMenuLabel>Dirección:</DropdownMenuLabel>
+                  <DropdownMenuRadioGroup>
+                    <DropdownMenuRadioItem value="top">
+                      Top
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="bottom">
+                      Bottom
+                    </DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel>Campo:</DropdownMenuLabel>
+                  <DropdownMenuRadioGroup>
+                    <DropdownMenuRadioItem value="user_name">
+                      Nombres
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="user_lastname">
+                      Apellidos
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="email">
+                      Email
+                    </DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+            <DropdownMenuSeparator />
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <IconAsync name="AdjustmentsHorizontalIcon" class="!w-6 !h-6" />
+                <span class="pl-2">Filtrar</span>
+              </DropdownMenuSubTrigger>
+              <DropdownMenuPortal>
+                <DropdownMenuSubContent>
+                  <DropdownMenuItem>
+                    <span>Email</span>
+                  </DropdownMenuItem>
+                </DropdownMenuSubContent>
+              </DropdownMenuPortal>
+            </DropdownMenuSub>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </footer>
   </div>
 </template>
